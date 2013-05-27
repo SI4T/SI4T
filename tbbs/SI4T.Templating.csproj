@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5A684552-749F-46A9-8FB7-5DD2BAE036A9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SI4T.Templating</RootNamespace>
+    <AssemblyName>SI4T.Templating</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tridion.Common">
+      <HintPath>..\..\dependencies\Tridion\Content Manager\Tridion.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Tridion.ContentManager">
+      <HintPath>..\..\dependencies\Tridion\Content Manager\Tridion.ContentManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Tridion.ContentManager.Common">
+      <HintPath>..\..\dependencies\Tridion\Content Manager\Tridion.ContentManager.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Tridion.ContentManager.Publishing">
+      <HintPath>..\..\dependencies\Tridion\Content Manager\Tridion.ContentManager.Publishing.dll</HintPath>
+    </Reference>
+    <Reference Include="Tridion.ContentManager.Templating">
+      <HintPath>..\..\dependencies\Tridion\Content Manager\Tridion.ContentManager.Templating.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\Constants.cs" />
+    <Compile Include="Common\ExtensionMethods.cs" />
+    <Compile Include="Common\FieldProcessor.cs" />
+    <Compile Include="Common\SearchData.cs" />
+    <Compile Include="Common\TemplateBase.cs" />
+    <Compile Include="GenerateSimpleXmlIndexData.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublishSearchData.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>$(SolutionDir)TcmUploadAssembly\TcmUploadAssembly.exe $(SolutionDir)TcmUploadAssembly\config.xml /verbose /folder:tcm:7-238-2 $(TargetPath)</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
