@@ -25,14 +25,14 @@ namespace SI4T.Templating
                 XmlDocument outputXml = this.GetXmlDocumentFromPackage("Output");
                 if (outputXml != null)
                 {
-                    XmlComment data = outputXml.CreateComment(String.Format(Constants.DELIMTER_PATTERN_SEARCHDATA, searchData));
+                    XmlComment data = outputXml.CreateComment(String.Format(Constants.DELIMITER_PATTERN_SEARCHDATA, searchData));
                     outputXml.DocumentElement.InsertBefore(data, outputXml.DocumentElement.FirstChild);
                     this.PushXmlDocumentToPackage("Output", outputXml);
                 }
                 else
                 {
                     String output = package.GetByName("Output").GetAsString();
-                    output = String.Format("<!--{0}-->{1}", String.Format(Constants.DELIMTER_PATTERN_SEARCHDATA, searchData),output);
+                    output = String.Format("<!--{0}-->{1}", String.Format(Constants.DELIMITER_PATTERN_SEARCHDATA, searchData),output);
                     this.PushStringToPackage("Output", output);
                 }
             }

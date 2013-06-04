@@ -10,23 +10,23 @@ namespace SI4T.Templating
         public const string PACKAGE_ITEM_EXCLUDE_FIELDS_BY_DEFAULT = "SI4T.Templating.ExcludeFieldsByDefault";
         public const string PACKAGE_ITEM_MIN_TEMPLATE_PRIO_FOR_INDEXING = "SI4T.Templating.MinTemplatePrioForIndexing";
         public const string PACKAGE_ITEM_MANAGED_FIELDS = "SI4T.Templating.ManagedFields";
-        
-        
+
+        //Context variable names
+        public const string CONTEXT_VARIABLE_FLAGGED_DCPS = "SI4T.Templating.FlaggedDcps";
+
         //Field names
         public const string FIELD_NOINDEX = "NoIndex";
         public const string FIELD_INCLUDEEXCLUDE = "SearchIndexInclude";
         public const string FIELD_MANAGEDFIELDS = "SearchIndexManagedFields";
         public const string FIELD_CUSTOMFIELDMAP = "SearchIndexCustomFieldMap";
+        public const string FIELD_LINKFIELDSTOEMBED = "SearchIndexLinkFieldsToEmbed";
         
         //Field values
         public const string FIELDVALUE_INCLUDE = "[include]";
         public const string FIELDVALUE_EXCLUDE = "[exclude]";
 
-        //Context variable names
-        public const string CONTEXT_VARIABLE_FLAGGED_DCPS = "SI4T.Templating.FlaggedDcps";
-        
         //Delimiters
-        public const string DELIMTER_PATTERN_SEARCHDATA = " INDEX-DATA-START:{0}:INDEX-DATA-END ";
+        public const string DELIMITER_PATTERN_SEARCHDATA = " INDEX-DATA-START:{0}:INDEX-DATA-END ";
         
         //XML Namspaces
         public const string NAMESPACE_XHTML = "http://www.w3.org/1999/xhtml";

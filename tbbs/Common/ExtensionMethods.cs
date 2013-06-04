@@ -8,14 +8,22 @@ using Tridion.ContentManager.ContentManagement;
 
 namespace SI4T.Templating
 {
+    /// <summary>
+    /// Extension methods for TOM.NET classes to control indexing behaviour
+    /// </summary>
     public static class ExtensionMethods
     {
+        /// <summary>
+        /// Check if an item (typically a page, CT or PT) is indexed by looking for standard metadata fields
+        /// </summary>
+        /// <param name="item">Item to be indexed</param>
+        /// <returns>true if it should be indexed</returns>
         public static bool IsIndexed(this RepositoryLocalObject item)
         {
             if (item.Metadata != null)
             {
-                XmlNode noIndex = item.Metadata.SelectSingleNode(String.Format("//*[local-name()='{0}']", Constants.FIELD_NOINDEX));
-                if (noIndex != null && noIndex.InnerText.ToLower() == "yes")
+                string noIndex = GetFieldValue(item.Metadata,Constants.FIELD_NOINDEX);
+                if (noIndex != null && noIndex.ToLower() == "yes")
                 {
                     return false;
                 }
@@ -23,6 +31,12 @@ namespace SI4T.Templating
             return true;
         }
 
+        /// <summary>
+        /// Check if a Component Presentation using a given CT should be indexed
+        /// </summary>
+        /// <param name="template">The CT used by the CP</param>
+        /// <param name="minPriority">The minimum template priority to consider for indexing (default 200=medium)</param>
+        /// <returns>true if it should be indexed</returns>
         public static bool IsIndexed(this ComponentTemplate template, int minPriority = 200)
         {
             //The logic for deciding to index a CP is likely to vary depending on the implementation
@@ -40,13 +54,19 @@ namespace SI4T.Templating
             return false;
         }
 
+        /// <summary>
+        /// Load field processor settings from template metadata
+        /// </summary>
+        /// <param name="template">The template to process</param>
+        /// <returns>field processor setting specific to this template</returns>
         public static FieldProcessorSettings GetFieldProcessorSettings(this Template template)
         {
             FieldProcessorSettings settings = new FieldProcessorSettings();
             if (template.Metadata != null)
             {
                 settings.SetFieldMap(GetFieldValue(template.Metadata,Constants.FIELD_CUSTOMFIELDMAP));
-                settings.SetManagedFields(GetFieldValue(template.Metadata, Constants.FIELD_MANAGEDFIELDS)); 
+                settings.SetManagedFields(GetFieldValue(template.Metadata, Constants.FIELD_MANAGEDFIELDS));
+                settings.SetLinkFieldsToEmbedFields(GetFieldValue(template.Metadata, Constants.FIELD_LINKFIELDSTOEMBED));
                 string includeExclude = GetFieldValue(template.Metadata, Constants.FIELD_INCLUDEEXCLUDE);
                 if (includeExclude!=null)
                 {

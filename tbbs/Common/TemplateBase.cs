@@ -170,6 +170,11 @@ namespace SI4T.Templating
         }
         #endregion
 
+        /// <summary>
+        /// Serialize an object as XML
+        /// </summary>
+        /// <param name="data">object to serialize</param>
+        /// <returns>string containing XML serialization</returns>
         protected string SerializeObjectToXml(object data)
         {
             StringBuilder sb = new StringBuilder();
@@ -180,6 +185,11 @@ namespace SI4T.Templating
             }
         }
 
+        /// <summary>
+        /// Serialize an object to XML
+        /// </summary>
+        /// <param name="data">object to serialize</param>
+        /// <param name="writer">XmlWriter to write the serialized data to</param>
         protected void SerializeObjectToXml(object data, XmlWriter writer)
         {
             XmlSerializer serializer = new XmlSerializer(data.GetType());
@@ -187,6 +197,11 @@ namespace SI4T.Templating
             serializer.Serialize(writer, data, namespaces);
         }
 
+        /// <summary>
+        /// Get a package item as an XmlDocument
+        /// </summary>
+        /// <param name="packageItemName">the package item name</param>
+        /// <returns>the item as an XmlDocument</returns>
         protected XmlDocument GetXmlDocumentFromPackage(string packageItemName)
         {
             Item item = m_Package.GetByName(packageItemName);
@@ -194,14 +209,14 @@ namespace SI4T.Templating
             {
                 throw new Exception(String.Format("No '{0}' package item found to create Xml Document from", packageItemName));
             }
-            XmlDocument data = item.GetAsXmlDocument();
-            if (data == null)
-            {
-                throw new Exception(String.Format("Package item '{0}' is not an XML document.", packageItemName));
-            }
-            return data;
+            return item.GetAsXmlDocument();
         }
 
+        /// <summary>
+        /// Push an XmlDocument item into the package
+        /// </summary>
+        /// <param name="packageItemName">the package item name</param>
+        /// <param name="data">the XmlDocument to push</param>
         protected void PushXmlDocumentToPackage(string packageItemname, XmlDocument data)
         {
             Item item = m_Package.GetByName(packageItemname);
@@ -212,6 +227,11 @@ namespace SI4T.Templating
             m_Package.PushItem(packageItemname, m_Package.CreateXmlDocumentItem(ContentType.Xml, data));
         }
 
+        /// <summary>
+        /// Push a string into the package
+        /// </summary>
+        /// <param name="packageItemname">the package item name</param>
+        /// <param name="data">the string to push</param>
         protected void PushStringToPackage(string packageItemname, String data)
         {
             Item item = m_Package.GetByName(packageItemname);
@@ -222,6 +242,10 @@ namespace SI4T.Templating
             m_Package.PushItem(packageItemname, m_Package.CreateStringItem(ContentType.Text, data));
         }
 
+        /// <summary>
+        /// Serialize search index data and push it into the package
+        /// </summary>
+        /// <param name="searchData">search data to serialize</param>
         protected void SerializeAndPushToPackage(SearchData searchData)
         {
             Logger.Debug(SerializeObjectToXml(searchData));

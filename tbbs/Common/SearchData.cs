@@ -9,6 +9,10 @@ using Tridion.ContentManager.ContentManagement.Fields;
 
 namespace SI4T.Templating
 {
+    /// <summary>
+    /// Generic search indexing data class - all methods are public virtual to allow this to
+    /// be subclassed and extended/altered with ease
+    /// </summary>
     [XmlRoot("indexdata")]
     public class SearchData 
     {
@@ -58,7 +62,12 @@ namespace SI4T.Templating
             _processor = new FieldProcessor();
         }
 
-        public List<string> ProcessPage(Page page)
+        /// <summary>
+        /// Prepare index data for a Page
+        /// </summary>
+        /// <param name="page">The page to process</param>
+        /// <returns>List of processed DCPs - can be used to prevent DCPs being indexed multiple times (both in page and CP rendering)</returns>
+        public virtual List<string> ProcessPage(Page page)
         {
             List<string> processedDcps = new List<string>();
             if (page.IsIndexed() && page.PageTemplate.IsIndexed())
@@ -104,7 +113,12 @@ namespace SI4T.Templating
             return processedDcps;
         }
 
-        public void ProcessComponentPresentation(ComponentPresentation cp, List<string> flaggedDcps)
+        /// <summary>
+        /// Prepare index data for a component presentation
+        /// </summary>
+        /// <param name="cp">Component Presentation to process</param>
+        /// <param name="flaggedDcps">List of already processed CPs, to avoid processing the same DCP more than once</param>
+        public virtual void ProcessComponentPresentation(ComponentPresentation cp, List<string> flaggedDcps)
         {
             string id = GetDcpIdentifier(cp);
             if (cp.ComponentTemplate.IsIndexed(_processor.MinimumComponentTemplatePrio) && flaggedDcps != null && !flaggedDcps.Contains(id))
@@ -115,7 +129,12 @@ namespace SI4T.Templating
             }
         }
 
-        public void ProcessComponent(Component comp, FieldProcessorSettings settings)
+        /// <summary>
+        /// Prepare index data for a component, as part of a dynamic component presentation
+        /// </summary>
+        /// <param name="comp">The component to process</param>
+        /// <param name="settings">field processor settings</param>
+        public virtual void ProcessComponent(Component comp, FieldProcessorSettings settings)
         {
             this.PublicationId = comp.ContextRepository.Id.ItemId;
             this.ItemType = 16;
@@ -132,13 +151,22 @@ namespace SI4T.Templating
             }
         }
 
-        private void ProcessPageMetadata(Page page)
+        /// <summary>
+        /// Prepare index data for page metadata
+        /// </summary>
+        /// <param name="page">The page to process</param>
+        public virtual void ProcessPageMetadata(Page page)
         {
             FieldProcessorSettings settings = page.PageTemplate.GetFieldProcessorSettings();
             ProcessMetadata(page, settings);
         }
 
-        private void ProcessMetadata(RepositoryLocalObject item, FieldProcessorSettings settings)
+        /// <summary>
+        /// Prepare index data for any item metadata
+        /// </summary>
+        /// <param name="item">The item to process</param>
+        /// <param name="settings">Field processor settings</param>
+        public virtual void ProcessMetadata(RepositoryLocalObject item, FieldProcessorSettings settings)
         {
             if (item.Metadata != null)
             {
@@ -147,49 +175,89 @@ namespace SI4T.Templating
             }
         }
 
-        private void ProcessComponentData(Component component, FieldProcessorSettings settings)
+        /// <summary>
+        /// Prepare index data for a component
+        /// </summary>
+        /// <param name="comp">The component to process</param>
+        /// <param name="settings">field processor settings</param>
+        public virtual void ProcessComponentData(Component component, FieldProcessorSettings settings)
         {
             ItemFields fields = new ItemFields(component.Content,component.Schema);
+            _processor.SetComponentAsProcessed(component.Id);
             _processor.ProcessData(fields, settings);
             ProcessMetadata(component, settings);
         }
 
-        public void SetCustomField(string fieldName, object value)
+        /// <summary>
+        /// Set a custom index field value
+        /// </summary>
+        /// <param name="fieldName">custom field name</param>
+        /// <param name="value">value for the index field</param>
+        public virtual void SetCustomField(string fieldName, object value)
         {
             SetCustomFields(fieldName, new List<object> { value });
         }
 
-        public void SetCustomFields(string fieldName, List<object> values)
+        /// <summary>
+        /// Set custom index field values
+        /// </summary>
+        /// <param name="fieldName">custom field name</param>
+        /// <param name="values">values for the index field</param>
+        public virtual void SetCustomFields(string fieldName, List<object> values)
         {
-            _processor.SetCustomFields(fieldName, values);
+            _processor.SetCustomFieldValues(fieldName, values);
         }
 
-        public XmlElement GetCatchAllElement()
+        /// <summary>
+        /// Get the catchall default index data element
+        /// </summary>
+        /// <returns>the catchall element</returns>
+        public virtual XmlElement GetCatchAllElement()
         {
             return _processor.GetCatchAllElement();
         }
 
-        public XmlElement GetCustomElement()
+        /// <summary>
+        /// Get a custom index data element
+        /// </summary>
+        /// <returns>the custom element</returns>
+        public virtual XmlElement GetCustomElement()
         {
             return _processor.GetCustomElement();
         }
 
-        public bool HasIndexData()
+        /// <summary>
+        /// Check if any data has been prepared for indexing
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool HasIndexData()
         {
             return _hasIndexData;
         }
 
-        public string GetDcpIdentifier(ComponentPresentation cp)
+        /// <summary>
+        /// Get an ID that will uniquely identify a DCP
+        /// </summary>
+        /// <param name="cp">The DCP</param>
+        /// <returns>Id in the form: dcp:{pubid}-{compid}-{ctid}</returns>
+        public virtual string GetDcpIdentifier(ComponentPresentation cp)
         {
             return GetDcpIdentifier(cp.Component.Id.PublicationId, cp.Component.Id.ItemId, cp.ComponentTemplate.Id.ItemId);
         }
 
-        public string GetDcpIdentifier(int publicationId, int componentId, int templateId)
+        /// <summary>
+        /// Get an ID that will uniquely identify a DCP
+        /// </summary>
+        /// <param name="publicationId"></param>
+        /// <param name="componentId"></param>
+        /// <param name="templateId"></param>
+        /// <returns>Id in the form: dcp:{pubid}-{compid}-{ctid}</returns>
+        public virtual string GetDcpIdentifier(int publicationId, int componentId, int templateId)
         {
             return String.Format("dcp:{0}-{1}-{2}", publicationId, componentId, templateId);
         }
 
-        private string GetUrlForDcp(ComponentPresentation cp)
+        public virtual string GetUrlForDcp(ComponentPresentation cp)
         {
             //Need to cover the case where a DCP is allowed on page - should we then use dynamic linking to get the URL?
             return cp.Component.Id.ToString();

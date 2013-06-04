@@ -9,21 +9,31 @@ using Tridion.ContentManager.Templating;
 
 namespace SI4T.Templating
 {
+    /// <summary>
+    /// Generic Field Processing Class - all methods are public virtual to allow this 
+    /// to be subclassed and behaviour altered/extended with ease
+    /// </summary>
     public class FieldProcessor
     {
         public FieldProcessorSettings DefaultSettings { get; set; }
         public XmlDocument IndexData { get; set; }
         public string Title { get; set; }
         public int MinimumComponentTemplatePrio { get; set; }
+        
+        private List<string> _processedComponents = new List<string>();
 
         public FieldProcessor()
         {
             IndexData = new XmlDocument();
             IndexData.LoadXml("<data><body></body><custom></custom></data>");
-            DefaultSettings = new FieldProcessorSettings { ExcludeByDefault = false, ManagedFields = new List<string>(), FieldMap = new Dictionary<string, string>() };
+            DefaultSettings = new FieldProcessorSettings { ExcludeByDefault = false, ManagedFields = new List<string>(), FieldMap = new Dictionary<string, IndexField>() };
         }
 
-        public void Initialize(Package package)
+        /// <summary>
+        /// Initialize settings from templating package variables
+        /// </summary>
+        /// <param name="package">The templating package</param>
+        public virtual void Initialize(Package package)
         {
             string excludeFields = package.GetValue(Constants.PACKAGE_ITEM_EXCLUDE_FIELDS_BY_DEFAULT);
             this.DefaultSettings.ExcludeByDefault = (excludeFields!=null && excludeFields.ToLower() == "true") ? true : false;
@@ -41,7 +51,35 @@ namespace SI4T.Templating
             }
         }
 
-        public void ProcessData(ItemFields fields, FieldProcessorSettings settings)
+        /// <summary>
+        /// Mark a component as being processed - to avoid processing the same component twice
+        /// </summary>
+        /// <param name="componentUri">the component tcm uri</param>
+        public virtual void SetComponentAsProcessed(string componentUri)
+        {
+            if (!_processedComponents.Contains(componentUri))
+            {
+                _processedComponents.Add(componentUri);
+            }
+        }
+
+        /// <summary>
+        /// Check if a component has already been processed - to avoid processing the same component twice
+        /// </summary>
+        /// <param name="componentUri">the component tcm uri</param>
+        /// <returns>true if component has previously been marked as processed</returns>
+        public virtual bool IsComponentAlreadyProcessed(string componentUri)
+        {
+            return _processedComponents.Contains(componentUri);
+        }
+
+
+        /// <summary>
+        /// Process field data building up index data in XML format
+        /// </summary>
+        /// <param name="fields">Fields to process</param>
+        /// <param name="settings">Custom settings for this set of fields (if not null overrides default settings)</param>
+        public virtual void ProcessData(ItemFields fields, FieldProcessorSettings settings = null)
         {
             if (settings == null)
             {
@@ -67,28 +105,55 @@ namespace SI4T.Templating
             ProcessFields(fields, settings);
         }
 
-        public void SetCustomFields(string fieldName, List<object> values)
+        /// <summary>
+        /// Add custom field values to the index data XML
+        /// </summary>
+        /// <param name="fieldName">Custom field name</param>
+        /// <param name="values">values to add</param>
+        /// <param name="encoded">set to true if values are already XML encoded (for example RTF content)</param>
+        public virtual void SetCustomFieldValues(string fieldName, List<object> values, bool encoded = false)
         {
             foreach (var val in values)
             {
-                XmlElement custom = IndexData.CreateElement(fieldName);
-                custom.InnerText = val.ToString();
-                IndexData.SelectSingleNode("/data/custom").AppendChild(custom);
+                IndexData.SelectSingleNode("/data/custom").AppendChild(CreateElement(fieldName,encoded,val.ToString()));
             }
         }
 
-        public XmlElement GetCatchAllElement()
+        /// <summary>
+        /// Add custom field value to the index data XML
+        /// </summary>
+        /// <param name="fieldName">Custom field name</param>
+        /// <param name="values">value to add</param>
+        /// <param name="encoded">set to true if values are already XML encoded (for example RTF content)</param>
+        public virtual void SetCustomFieldValue(string fieldName, object value, bool encoded = false)
+        {
+            SetCustomFieldValues(fieldName, new List<object> { value }, encoded);
+        }
+
+        /// <summary>
+        /// Get the catch all default index data element
+        /// </summary>
+        /// <returns></returns>
+        public virtual XmlElement GetCatchAllElement()
         {
             return IndexData.SelectSingleNode("/data/body") as XmlElement;
         }
 
-        public XmlElement GetCustomElement()
+        /// <summary>
+        /// Get a custom index data element
+        /// </summary>
+        /// <returns></returns>
+        public virtual XmlElement GetCustomElement()
         {
             return IndexData.SelectSingleNode("/data/custom") as XmlElement;
         }
 
-
-        protected void ProcessFields(ItemFields fields, FieldProcessorSettings settings)
+        /// <summary>
+        /// Process item fields
+        /// </summary>
+        /// <param name="fields">Fields to process</param>
+        /// <param name="settings">Field processor settings</param>
+        public virtual void ProcessFields(ItemFields fields, FieldProcessorSettings settings)
         {
             foreach (var field in fields)
             {
@@ -96,10 +161,6 @@ namespace SI4T.Templating
                 //OR we are including by default and the field is NOT in the set of managed fields
                 if ((settings.ExcludeByDefault == settings.ManagedFields.Contains(field.Name)))
                 {
-                    if (field is TextField)
-                    {
-                        ProcessField(field, settings);
-                    }
                     if (field is EmbeddedSchemaField)
                     {
                         foreach (var subfields in (field as EmbeddedSchemaField).Values)
@@ -107,39 +168,107 @@ namespace SI4T.Templating
                             ProcessFields(subfields, settings);
                         }
                     }
+                    else
+                    {
+                        ProcessField(field, settings);
+                    }
                 }
             }
         }
 
-        protected void ProcessField(ItemField field, FieldProcessorSettings settings)
+        /// <summary>
+        /// Process an individual field
+        /// </summary>
+        /// <param name="field">The field to process</param>
+        /// <param name="settings">field processor settings</param>
+        public virtual void ProcessField(ItemField field, FieldProcessorSettings settings)
         {
-            bool encoded = false;
-            if (field is XhtmlField)
+            if (settings.HasCustomMapping(field.Name))
             {
-                encoded = true;
+                ProcessCustomField(field, settings);
             }
+            else
+            {
+                ProcessCatchAllField(field, settings);
+            }
+        }
+
+        /// <summary>
+        /// Process a field into the catchall index data
+        /// </summary>
+        /// <param name="field">The field to process</param>
+        /// <param name="settings">field processor settings</param>
+        public virtual void ProcessCatchAllField(ItemField field, FieldProcessorSettings settings = null)
+        {
+            //only process text fields
             if (field is TextField)
             {
-                ProcessTextField(field as TextField, encoded, settings);
+                AddToData(((TextField)field).Values, (field is XhtmlField));
+            }
+            if (field is ComponentLinkField && settings.IsLinkToBeFollowed(field.Name))
+            {
+                foreach (var comp in ((ComponentLinkField)field).Values)
+                {
+                    //avoid circular links, and indexing the items that are linked more than once
+                    if (!IsComponentAlreadyProcessed(comp.Id))
+                    {
+                        SetComponentAsProcessed(comp.Id);
+                        ProcessData(new ItemFields(comp.Content, comp.Schema), settings);
+                    }
+                }
             }
         }
 
-        protected void ProcessTextField(TextField textField, bool encoded, FieldProcessorSettings settings)
+        /// <summary>
+        /// Process a field into a custom index data element
+        /// </summary>
+        /// <param name="field">The field to process</param>
+        /// <param name="settings">field processor settings</param>
+        public virtual void ProcessCustomField(ItemField field, FieldProcessorSettings settings = null)
         {
-            foreach (var value in textField.Values)
+            IndexField targetField = settings.CustomFieldTarget(field.Name);
+            //indexing behaviour is more specific for custom fields:
+            //1. For keyword or component link fields, the kw or linked component item id is indexed
+            //2. For date fields, the date (in standard format) is indexed
+            //3. For number fields the number is indexed
+            //4. For text fields, the text content (no markup) is indexed
+            IList<string> values = new List<string>();
+            if (field is KeywordField)
             {
-                AddToData(textField.Name, value, encoded, settings);
+                values = ((KeywordField)field).Values.Select(k => k.Id.ItemId.ToString()).ToList();
             }
+            else if (field is ComponentLinkField)
+            {
+                values = ((ComponentLinkField)field).Values.Select(c => c.Id.ItemId.ToString()).ToList();
+            }
+            else if (field is DateField)
+            {
+                values = ((DateField)field).Values.Select(d => d.ToString("o") + "Z").ToList();
+            }
+            else if (field is NumberField)
+            {
+                values = ((NumberField)field).Values.Select(n => n.ToString()).ToList();
+            }
+            else if (field is TextField)
+            {
+                values = ((TextField)field).Values;
+            }
+            AddToData(values, (field is XhtmlField), targetField);
         }
 
-        protected void AddToData(string fieldname, string value, bool encoded, FieldProcessorSettings settings)
+        /// <summary>
+        /// Add field values into the index data 
+        /// </summary>
+        /// <param name="values">Values to add</param>
+        /// <param name="encoded">set to true if values are already XML encoded (for example RTF content)</param>
+        /// <param name="targetField">Configuration for the target (search index) field</param>
+        public virtual void AddToData(IList<string> values, bool encoded, IndexField targetField = null)
         {
-            bool processed = false;
-            if (settings.FieldMap.ContainsKey(fieldname))
+            foreach (var value in values)
             {
-                string targetFieldName = settings.FieldMap[fieldname];
+                bool processed = false;
                 //Title is a special case
-                if (targetFieldName == "title")
+                if (targetField!=null && targetField.Name == "title")
                 {
                     if (String.IsNullOrEmpty(this.Title))
                     {
@@ -147,19 +276,32 @@ namespace SI4T.Templating
                         processed = true;
                     }
                 }
-                else if (IndexData.SelectSingleNode("/data/custom/" + targetFieldName) == null)
+                else if (targetField != null && (targetField.IsMultiValue || IndexData.SelectSingleNode("/data/custom/" + targetField.Name) == null))
                 {
-                    IndexData.SelectSingleNode("/data/custom").AppendChild(CreateElement(targetFieldName, encoded, value));
+                    SetCustomFieldValue(targetField.Name, value, encoded);
                     processed = true;
                 }
-            }
-            if (!processed)
-            {
-                IndexData.SelectSingleNode("data/body").AppendChild(CreateElement("p",encoded,value));
+                if (!processed)
+                {
+                    IndexData.SelectSingleNode("data/body").AppendChild(CreateElement("p", encoded, value));
+                }
             }
         }
 
-        protected XmlElement CreateElement(string targetFieldName, bool encoded, string value)
+        /// <summary>
+        /// Convert XHTML to text
+        /// </summary>
+        /// <param name="xhtml">XHTML in string format</param>
+        /// <returns>text without HTML tags and sentence ends added for line breaks closing divs and paragraphs</returns>
+        public virtual string XhtmlToText(string xhtml)
+        {
+            string res = Regex.Replace(xhtml, "</p>|</div>|<br/>", ". ");
+            res = Regex.Replace(res, @"\<[^\>]*\>", "");
+            res = Regex.Replace(res, @"\s+", " ");
+            return res.Trim();
+        }
+
+        public virtual XmlElement CreateElement(string targetFieldName, bool encoded, string value)
         {
             XmlElement field = IndexData.CreateElement(targetFieldName);
             if (encoded)
@@ -171,58 +313,6 @@ namespace SI4T.Templating
                 field.InnerText = value;
             }
             return field;
-        }
-
-        public static string XhtmlToText(string xhtml)
-        {
-            string res = Regex.Replace(xhtml, "</p>|</div>|<br/>", ". ");
-            res = Regex.Replace(res,@"\<[^\>]*\>", "");
-            res = Regex.Replace(res,@"\s+", " ");
-            return res;
-        }
-    }
-
-    public class FieldProcessorSettings
-    {
-        public bool? ExcludeByDefault { get; set; }
-        public List<string> ManagedFields { get; set; }
-        public Dictionary<string, string> FieldMap { get; set; }
-        public void SetManagedFields(string managedFields)
-        {
-            if (managedFields != null)
-            {
-                ManagedFields = new List<string>();
-                foreach (string token in managedFields.Split(','))
-                {
-                    ManagedFields.Add(token.Trim());
-                }
-            }
-        }
-        public void SetFieldMap(string customFields)
-        {
-            if (customFields != null)
-            {
-                FieldMap = new Dictionary<string, string>();
-                foreach (string token in customFields.Split('|'))
-                {
-                    string[] items = token.Split(':');
-                    string target = items[0];
-                    if (items.Length > 1)
-                    {
-                        foreach (string source in items[1].Split(','))
-                        {
-                            if (!FieldMap.ContainsKey(source))
-                            {
-                                FieldMap.Add(source, target);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        FieldMap.Add(target, target);
-                    }
-                }
-            }
         }
     }
 }

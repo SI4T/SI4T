@@ -39,25 +39,27 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Tridion.Common">
-      <HintPath>..\..\dependencies\Tridion\Content Manager\Tridion.Common.dll</HintPath>
+      <HintPath>..\..\SI4Tref\2011SP1\Tridion.Common.dll</HintPath>
     </Reference>
     <Reference Include="Tridion.ContentManager">
-      <HintPath>..\..\dependencies\Tridion\Content Manager\Tridion.ContentManager.dll</HintPath>
+      <HintPath>..\..\SI4Tref\2011SP1\Tridion.ContentManager.dll</HintPath>
     </Reference>
     <Reference Include="Tridion.ContentManager.Common">
-      <HintPath>..\..\dependencies\Tridion\Content Manager\Tridion.ContentManager.Common.dll</HintPath>
+      <HintPath>..\..\SI4Tref\2011SP1\Tridion.ContentManager.Common.dll</HintPath>
     </Reference>
     <Reference Include="Tridion.ContentManager.Publishing">
-      <HintPath>..\..\dependencies\Tridion\Content Manager\Tridion.ContentManager.Publishing.dll</HintPath>
+      <HintPath>..\..\SI4Tref\2011SP1\Tridion.ContentManager.Publishing.dll</HintPath>
     </Reference>
     <Reference Include="Tridion.ContentManager.Templating">
-      <HintPath>..\..\dependencies\Tridion\Content Manager\Tridion.ContentManager.Templating.dll</HintPath>
+      <HintPath>..\..\SI4Tref\2011SP1\Tridion.ContentManager.Templating.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Constants.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Common\FieldProcessor.cs" />
+    <Compile Include="Common\FieldProcessorSettings.cs" />
+    <Compile Include="Common\IndexField.cs" />
     <Compile Include="Common\SearchData.cs" />
     <Compile Include="Common\TemplateBase.cs" />
     <Compile Include="GenerateSimpleXmlIndexData.cs" />
@@ -66,7 +68,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(SolutionDir)TcmUploadAssembly\TcmUploadAssembly.exe $(SolutionDir)TcmUploadAssembly\config.xml /verbose /folder:tcm:7-238-2 $(TargetPath)</PostBuildEvent>
+    <PostBuildEvent>$(SolutionDir)..\..\SI4Tref\TcmUploadAssembly.exe $(SolutionDir)..\..\SI4Tref\config.xml /verbose /folder:tcm:79-831-2 $(TargetPath)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
