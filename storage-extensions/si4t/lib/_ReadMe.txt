@@ -1,0 +1,2 @@
+Add the Tridion content delivery jars in order to build the project
+cd_ambient.jarcd_broker.jarcd_cache.jarcd_core.jarcd_datalayer.jarcd_deployer.jarcd_dynamic.jarcd_linking.jarcd_model.jarcd_preview_ambient.jarcd_preview_webservice.jarcd_session.jarcd_tcdl.jarcd_upload.jarcd_wai.jarcd_webservice.jar
