@@ -12,8 +12,8 @@ namespace SI4T.Templating
     /// and adds it to the rendered Output. This TBB should be put at the end of
     /// the template, after all TBBs which create/work with the Output are completed
     /// </summary>
-    [TcmTemplateTitle("Add Search Indexing Data To Rendered Output")]
-    public class PublishSearchData : TemplateBase
+    [TcmTemplateTitle("Add Index Data To Output")]
+    public class AddIndexData : TemplateBase
     {
         public override void Transform(Engine engine, Package package)
         {

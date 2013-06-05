@@ -35,10 +35,11 @@ namespace SI4T.Templating
         /// <param name="package">The templating package</param>
         public virtual void Initialize(Package package)
         {
-            string excludeFields = package.GetValue(Constants.PACKAGE_ITEM_EXCLUDE_FIELDS_BY_DEFAULT);
-            this.DefaultSettings.ExcludeByDefault = (excludeFields!=null && excludeFields.ToLower() == "true") ? true : false;
-            this.DefaultSettings.ManagedFields = package.GetValue(Constants.PACKAGE_ITEM_MANAGED_FIELDS) == null ? new List<string>() : package.GetValue(Constants.PACKAGE_ITEM_MANAGED_FIELDS).Split(',').ToList();
-            this.DefaultSettings.SetFieldMap(package.GetValue(Constants.PACKAGE_ITEM_CUSTOMFIELDS));
+            string excludeFields = package.GetValue(Constants.FIELD_INCLUDEEXCLUDE);
+            this.DefaultSettings.ExcludeByDefault = (excludeFields!=null && excludeFields.ToLower().Contains(Constants.FIELDVALUE_EXCLUDE)) ? true : false;
+            this.DefaultSettings.ManagedFields = package.GetValue(Constants.FIELD_MANAGEDFIELDS) == null ? new List<string>() : package.GetValue(Constants.FIELD_MANAGEDFIELDS).Split(',').ToList();
+            this.DefaultSettings.SetFieldMap(package.GetValue(Constants.FIELD_CUSTOMFIELDMAP));
+            this.DefaultSettings.SetLinkFieldsToEmbedFields(package.GetValue(Constants.FIELD_LINKFIELDSTOEMBED));
             string prioString = package.GetValue(Constants.PACKAGE_ITEM_MIN_TEMPLATE_PRIO_FOR_INDEXING);
             int prio = 0;
             if (Int32.TryParse(prioString, out prio))
@@ -101,6 +102,10 @@ namespace SI4T.Templating
             if (settings.FieldMap == null)
             {
                 settings.FieldMap = DefaultSettings.FieldMap;
+            }
+            if (settings.LinkFieldsToEmbed == null)
+            {
+                settings.LinkFieldsToEmbed = DefaultSettings.LinkFieldsToEmbed;
             }
             ProcessFields(fields, settings);
         }

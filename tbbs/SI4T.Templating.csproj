@@ -62,9 +62,9 @@
     <Compile Include="Common\IndexField.cs" />
     <Compile Include="Common\SearchData.cs" />
     <Compile Include="Common\TemplateBase.cs" />
-    <Compile Include="GenerateSimpleXmlIndexData.cs" />
+    <Compile Include="GenerateIndexData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PublishSearchData.cs" />
+    <Compile Include="AddIndexData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

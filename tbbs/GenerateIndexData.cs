@@ -13,8 +13,8 @@ namespace SI4T.Templating
     /// containing page or component data to be indexed by a search
     /// engine when publishing a Page or Dynamic Component Presentation
     /// </summary>
-	[TcmTemplateTitle("Generate Simple Xml Data For Search Index")]
-	public class GenerateSimpleXmlIndexData : TemplateBase
+	[TcmTemplateTitle("Generate Index Data")]
+	public class GenerateIndexData : TemplateBase
 	{
 		public override void Transform(Engine engine, Package package)
 		{

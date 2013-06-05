@@ -6,11 +6,8 @@ namespace SI4T.Templating
     {
         //Package item names
         public const string PACKAGE_ITEM_SEARCHDATA = "SI4T.Templating.SearchData";
-        public const string PACKAGE_ITEM_CUSTOMFIELDS = "SI4T.Templating.CustomFields";
-        public const string PACKAGE_ITEM_EXCLUDE_FIELDS_BY_DEFAULT = "SI4T.Templating.ExcludeFieldsByDefault";
         public const string PACKAGE_ITEM_MIN_TEMPLATE_PRIO_FOR_INDEXING = "SI4T.Templating.MinTemplatePrioForIndexing";
-        public const string PACKAGE_ITEM_MANAGED_FIELDS = "SI4T.Templating.ManagedFields";
-
+        
         //Context variable names
         public const string CONTEXT_VARIABLE_FLAGGED_DCPS = "SI4T.Templating.FlaggedDcps";
 
