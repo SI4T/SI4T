@@ -1,4 +1,4 @@
-   Copyright 2013 Will Price and Raimond Kempees
+   Copyright 2013 Will Price, Raimond Kempees and other contributors
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use these files except in compliance with the License.
