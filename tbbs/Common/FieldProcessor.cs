@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Xml;
 using Tridion.ContentManager.ContentManagement.Fields;
 using Tridion.ContentManager.Templating;
@@ -40,7 +41,7 @@ namespace SI4T.Templating
             this.DefaultSettings.ManagedFields = package.GetValue(Constants.FIELD_MANAGEDFIELDS) == null ? new List<string>() : package.GetValue(Constants.FIELD_MANAGEDFIELDS).Split(',').ToList();
             this.DefaultSettings.SetFieldMap(package.GetValue(Constants.FIELD_CUSTOMFIELDMAP));
             this.DefaultSettings.SetLinkFieldsToEmbedFields(package.GetValue(Constants.FIELD_LINKFIELDSTOEMBED));
-            string prioString = package.GetValue(Constants.PACKAGE_ITEM_MIN_TEMPLATE_PRIO_FOR_INDEXING);
+            string prioString = package.GetValue(Constants.FIELD_MIN_CT_PRIO);
             int prio = 0;
             if (Int32.TryParse(prioString, out prio))
             {
@@ -288,7 +289,7 @@ namespace SI4T.Templating
                 }
                 if (!processed)
                 {
-                    IndexData.SelectSingleNode("data/body").AppendChild(CreateElement("p", encoded, value));
+                    IndexData.SelectSingleNode("data/body").AppendChild(CreateElement(null, encoded, value));
                 }
             }
         }
@@ -300,24 +301,29 @@ namespace SI4T.Templating
         /// <returns>text without HTML tags and sentence ends added for line breaks closing divs and paragraphs</returns>
         public virtual string XhtmlToText(string xhtml)
         {
-            string res = Regex.Replace(xhtml, "</p>|</div>|<br/>", ". ");
+            string res = Regex.Replace(xhtml, "</td>|</th>", " ");
+            res = Regex.Replace(xhtml, "</tr>|</p>|</div>|<br/>", ". ");
             res = Regex.Replace(res, @"\<[^\>]*\>", "");
             res = Regex.Replace(res, @"\s+", " ");
-            return res.Trim();
+            return HttpUtility.HtmlDecode(res.Trim());
         }
 
-        public virtual XmlElement CreateElement(string targetFieldName, bool encoded, string value)
+        public virtual XmlNode CreateElement(string targetFieldName, bool encoded, string value)
         {
-            XmlElement field = IndexData.CreateElement(targetFieldName);
             if (encoded)
             {
-                field.InnerXml = XhtmlToText(value);
+                value = XhtmlToText(value);
+            }
+            if (targetFieldName == null)
+            {
+                return IndexData.CreateTextNode(value + ". ");
             }
             else
             {
+                XmlElement field = IndexData.CreateElement(targetFieldName);
                 field.InnerText = value;
+                return field;
             }
-            return field;
         }
     }
 }

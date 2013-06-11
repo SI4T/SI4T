@@ -1,0 +1,69 @@
+<xsd:schema xmlns="http://www.si4t.org/tridion/schemas/indexing-parameters" xmlns:tcmi="http://www.tridion.com/ContentManager/5.0/Instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.si4t.org/tridion/schemas/indexing-parameters">
+	<xsd:import namespace="http://www.tridion.com/ContentManager/5.0/Instance"></xsd:import>
+	<xsd:annotation>
+		<xsd:appinfo>
+			<tcm:Labels xmlns:tcm="http://www.tridion.com/ContentManager/5.0">
+				<tcm:Label ElementName="SearchIndexInclude" Metadata="false">Field Processing Behaviour</tcm:Label>
+				<tcm:Label ElementName="SearchIndexManagedFields" Metadata="false">Managed (included/excluded) Fields</tcm:Label>
+				<tcm:Label ElementName="SearchIndexCustomFieldMap" Metadata="false">Field Mapping</tcm:Label>
+				<tcm:Label ElementName="SearchIndexLinkFieldsToEmbed" Metadata="false">Link Fields to Embed</tcm:Label>
+				<tcm:Label ElementName="SearchIndexMinTemplatePrio" Metadata="false">Min CT Prio for Inclusion in Index Data (200=Medium)</tcm:Label>
+			</tcm:Labels>
+		</xsd:appinfo>
+	</xsd:annotation>
+	<xsd:element name="Parameters">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="SearchIndexInclude" minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<tcm:ExtensionXml xmlns:tcm="http://www.tridion.com/ContentManager/5.0">
+								<configuration xmlns="http://www.sdltridion.com/2011/SiteEdit">
+									<field>
+										<editable>true</editable>
+									</field>
+								</configuration>
+							</tcm:ExtensionXml>
+							<tcm:Size xmlns:tcm="http://www.tridion.com/ContentManager/5.0">1</tcm:Size>
+							<tcm:listtype xmlns:tcm="http://www.tridion.com/ContentManager/5.0">radio</tcm:listtype>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:normalizedString">
+							<xsd:enumeration value="Include All Fields by Default [include]"></xsd:enumeration>
+							<xsd:enumeration value="Exclude All Fields By Default [exclude]"></xsd:enumeration>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:element>
+				<xsd:element name="SearchIndexManagedFields" minOccurs="0" maxOccurs="1" type="xsd:normalizedString">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<tcm:ExtensionXml xmlns:tcm="http://www.tridion.com/ContentManager/5.0"></tcm:ExtensionXml>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="SearchIndexCustomFieldMap" minOccurs="0" maxOccurs="1" type="xsd:normalizedString">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<tcm:ExtensionXml xmlns:tcm="http://www.tridion.com/ContentManager/5.0"></tcm:ExtensionXml>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="SearchIndexLinkFieldsToEmbed" minOccurs="0" maxOccurs="1" type="xsd:normalizedString">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<tcm:ExtensionXml xmlns:tcm="http://www.tridion.com/ContentManager/5.0"></tcm:ExtensionXml>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="SearchIndexMinTemplatePrio" minOccurs="0" maxOccurs="1" type="xsd:decimal">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<tcm:ExtensionXml xmlns:tcm="http://www.tridion.com/ContentManager/5.0"></tcm:ExtensionXml>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

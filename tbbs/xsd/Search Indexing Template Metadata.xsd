@@ -1,0 +1,82 @@
+<xsd:schema xmlns="http://www.si4t.org/tridion/schemas/indexing-parameters" xmlns:tcmi="http://www.tridion.com/ContentManager/5.0/Instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.si4t.org/tridion/schemas/indexing-parameters">
+	<xsd:import namespace="http://www.tridion.com/ContentManager/5.0/Instance"></xsd:import>
+	<xsd:annotation>
+		<xsd:appinfo>
+			<tcm:Labels xmlns:tcm="http://www.tridion.com/ContentManager/5.0">
+				<tcm:Label ElementName="NoIndex" Metadata="true">Suppress Content From Search Index</tcm:Label>
+				<tcm:Label ElementName="SearchIndexInclude" Metadata="true">Field Processing Behaviour</tcm:Label>
+				<tcm:Label ElementName="SearchIndexManagedFields" Metadata="true">SearchIndexManagedFields</tcm:Label>
+				<tcm:Label ElementName="SearchIndexCustomFieldMap" Metadata="true">SearchIndexCustomFieldMap</tcm:Label>
+				<tcm:Label ElementName="SearchIndexLinkFieldsToEmbed" Metadata="true">SearchIndexLinkFieldsToEmbed</tcm:Label>
+			</tcm:Labels>
+		</xsd:appinfo>
+	</xsd:annotation>
+	<xsd:element name="Metadata">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="NoIndex" minOccurs="0" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<tcm:ExtensionXml xmlns:tcm="http://www.tridion.com/ContentManager/5.0">
+								<configuration xmlns="http://www.sdltridion.com/2011/SiteEdit">
+									<field>
+										<editable>true</editable>
+									</field>
+								</configuration>
+							</tcm:ExtensionXml>
+							<tcm:Size xmlns:tcm="http://www.tridion.com/ContentManager/5.0">1</tcm:Size>
+							<tcm:listtype xmlns:tcm="http://www.tridion.com/ContentManager/5.0">checkbox</tcm:listtype>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:normalizedString">
+							<xsd:enumeration value="Yes"></xsd:enumeration>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:element>
+				<xsd:element name="SearchIndexInclude" minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<tcm:ExtensionXml xmlns:tcm="http://www.tridion.com/ContentManager/5.0">
+								<configuration xmlns="http://www.sdltridion.com/2011/SiteEdit">
+									<field>
+										<editable>true</editable>
+									</field>
+								</configuration>
+							</tcm:ExtensionXml>
+							<tcm:Size xmlns:tcm="http://www.tridion.com/ContentManager/5.0">1</tcm:Size>
+							<tcm:listtype xmlns:tcm="http://www.tridion.com/ContentManager/5.0">radio</tcm:listtype>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:normalizedString">
+							<xsd:enumeration value="Include All Fields by Default [include]"></xsd:enumeration>
+							<xsd:enumeration value="Exclude All Fields By Default [exclude]"></xsd:enumeration>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:element>
+				<xsd:element name="SearchIndexManagedFields" minOccurs="0" maxOccurs="1" type="xsd:normalizedString">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<tcm:ExtensionXml xmlns:tcm="http://www.tridion.com/ContentManager/5.0"></tcm:ExtensionXml>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="SearchIndexCustomFieldMap" minOccurs="0" maxOccurs="1" type="xsd:normalizedString">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<tcm:ExtensionXml xmlns:tcm="http://www.tridion.com/ContentManager/5.0"></tcm:ExtensionXml>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="SearchIndexLinkFieldsToEmbed" minOccurs="0" maxOccurs="1" type="xsd:normalizedString">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<tcm:ExtensionXml xmlns:tcm="http://www.tridion.com/ContentManager/5.0"></tcm:ExtensionXml>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

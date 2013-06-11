@@ -6,7 +6,6 @@ namespace SI4T.Templating
     {
         //Package item names
         public const string PACKAGE_ITEM_SEARCHDATA = "SI4T.Templating.SearchData";
-        public const string PACKAGE_ITEM_MIN_TEMPLATE_PRIO_FOR_INDEXING = "SI4T.Templating.MinTemplatePrioForIndexing";
         
         //Context variable names
         public const string CONTEXT_VARIABLE_FLAGGED_DCPS = "SI4T.Templating.FlaggedDcps";
@@ -17,6 +16,7 @@ namespace SI4T.Templating
         public const string FIELD_MANAGEDFIELDS = "SearchIndexManagedFields";
         public const string FIELD_CUSTOMFIELDMAP = "SearchIndexCustomFieldMap";
         public const string FIELD_LINKFIELDSTOEMBED = "SearchIndexLinkFieldsToEmbed";
+        public const string FIELD_MIN_CT_PRIO = "SearchIndexMinTemplatePrio";
         
         //Field values
         public const string FIELDVALUE_INCLUDE = "[include]";
