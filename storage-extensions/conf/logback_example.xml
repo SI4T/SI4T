@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <!-- Properties -->
+    <property name="log.pattern" value="%date %-5level %logger{0} - %message%n"/>
+    <property name="log.history" value="7"/>
+    <property name="log.folder" value="D:/Logs/httpupload.website"/>
+    <property name="log.level" value="DEBUG"/>
+
+    <!-- Appenders -->
+	 <appender name="rollingHibernateLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.folder}/cd_hibernate.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${log.history}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <prudent>true</prudent>
+    </appender>
+	<appender name="rollingSpringLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.folder}/cd_spring.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${log.history}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <prudent>true</prudent>
+    </appender>
+    <appender name="rollingTransportLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.folder}/cd_transport.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${log.history}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <prudent>true</prudent>
+    </appender>
+    <appender name="rollingDeployerLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.folder}/cd_deployer.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${log.history}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <prudent>true</prudent>
+    </appender>
+    <appender name="rollingMonitorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.folder}/cd_monitor.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${log.history}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <prudent>true</prudent>
+    </appender>
+    <appender name="rollingCoreLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.folder}/cd_core.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${log.history}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <prudent>true</prudent>
+    </appender>
+	<appender name="extensions" class="ch.qos.logback.core.FileAppender">
+    <file>${log.folder}/cd_extensions.log</file>
+    <append>true</append>
+    <encoder>
+      <pattern>${log.pattern}</pattern>
+    </encoder>
+  </appender>
+
+    <!-- Loggers -->
+    <logger name="com.tridion" level="${log.level}"/>
+    <logger name="com.tridion.transport">
+        <appender-ref ref="rollingTransportLog"/>
+    </logger>
+	<logger name="org.hibernate" level="ERROR" additivity="false">
+        <appender-ref ref="rollingHibernateLog"/>
+    </logger>
+	<logger name="org.springframework" level="ERROR" additivity="false">
+        <appender-ref ref="rollingSpringLog"/>
+    </logger>
+    <logger name="com.tridion.transport.HTTPSReceiverServlet">
+        <appender-ref ref="rollingDeployerLog"/>
+    </logger>
+    <logger name="com.tridion.transport.transportpackage">
+        <appender-ref ref="rollingDeployerLog"/>
+    </logger>
+    <logger name="com.tridion.transformer">
+        <appender-ref ref="rollingDeployerLog"/>
+    </logger>
+    <logger name="com.tridion.deployer" level="DEBUG" additivity="false">
+        <appender-ref ref="rollingDeployerLog"/>
+    </logger>
+    <logger name="com.tridion.tcdl">
+        <appender-ref ref="rollingDeployerLog"/>
+    </logger>
+    <logger name="com.tridion.event">
+        <appender-ref ref="rollingDeployerLog"/>
+    </logger>
+    <logger name="com.tridion.monitor">
+        <appender-ref ref="rollingMonitorLog"/>
+    </logger>
+	<!-- SI4T:
+			Example logging. Turn off (or set to ERROR) when happy.
+	-->
+	<logger name="com.tridion.storage.si4t" level="DEBUG" additivity="false">
+		<appender-ref ref="extensions" />
+	</logger>
+	<logger name="org.si4t.solr" level="TRACE" additivity="false">
+		<appender-ref ref="extensions" />
+	</logger>
+    <root level="DEBUG">
+        <appender-ref ref="rollingCoreLog"/>
+    </root>
+</configuration>
