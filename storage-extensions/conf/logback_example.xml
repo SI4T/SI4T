@@ -67,13 +67,13 @@
         </encoder>
         <prudent>true</prudent>
     </appender>
-	<appender name="extensions" class="ch.qos.logback.core.FileAppender">
-    <file>${log.folder}/cd_extensions.log</file>
-    <append>true</append>
-    <encoder>
-      <pattern>${log.pattern}</pattern>
-    </encoder>
-  </appender>
+<appender name="extensions" class="ch.qos.logback.core.FileAppender">
+	<file>${log.folder}/cd_extensions.log</file>
+	<append>true</append>
+	<encoder>
+		<pattern>${log.pattern}</pattern>
+	</encoder>
+</appender>
 
     <!-- Loggers -->
     <logger name="com.tridion" level="${log.level}"/>

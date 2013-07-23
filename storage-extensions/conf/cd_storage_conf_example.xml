@@ -19,7 +19,9 @@
 					The standard Class com.tridion.storage.JAPDAOFactory is overridden.
 					It is possible to mix and match JPA and FS Search DAO factories should there be need.
 			-->
-			<Storage Type="persistence" Id="defaultdb" dialect="MSSQL" Class="com.tridion.storage.extensions.search.JPASearchDAOFactory">
+			<Storage 
+				Type="persistence" Id="defaultdb" dialect="MSSQL" 
+				Class="com.tridion.storage.extensions.search.JPASearchDAOFactory">
 				<Pool Type="jdbc" Size="5" MonitorInterval="60" IdleTimeout="120" CheckoutTimeout="120" />
 				<DataSource Class="com.microsoft.sqlserver.jdbc.SQLServerDataSource">
 					<Property Name="serverName" Value="[SERVERNAME]" />
@@ -32,7 +34,11 @@
 						as well as which binaries to index, the default URL to post documents to as well as
 						pointing the indexer to specific cores for specific Publications.
 				-->
-				<Indexer Class="com.tridion.extensions.storage.search.solr.SolrIndexer" DefaultCoreUrl="http://localhost:8080/solr/staging" Mode="http" DocExtensions="pdf,docx,doc,xls,xlsx,pptx,ppt">
+				<Indexer 
+					Class="com.tridion.extensions.storage.search.solr.SolrIndexer" 
+					DefaultCoreUrl="http://localhost:8080/solr/staging" 
+					Mode="http" 
+					DocExtensions="pdf,docx,doc,xls,xlsx,pptx,ppt">
 					<Urls>
 						<!-- SI4T: 
 								The Value attribute is the complete URL to a Solr Core
@@ -49,8 +55,14 @@
 					If the filesystem is used to publish pages to, override the standard FSDAOFactory
 					and configure the cores as desired
 			-->
-			<Storage Type="filesystem" Class="com.tridion.storage.extensions.search.FSSearchDAOFactory" Id="defaultFile" defaultFilesystem="false" defaultStorage="false">
-				<Indexer Class="com.tridion.extensions.storage.search.solr.SolrIndexer" Mode="http" DefaultCoreUrl="http://localhost:8080/solr/staging" DocExtensions="pdf,docx,doc,xls,xlsx,pptx,ppt">
+			<Storage Type="filesystem" 
+					Class="com.tridion.storage.extensions.search.FSSearchDAOFactory" 
+					Id="defaultFile" defaultFilesystem="false" defaultStorage="false">
+				<Indexer 
+					Class="com.tridion.extensions.storage.search.solr.SolrIndexer" 
+					Mode="http" 
+					DefaultCoreUrl="http://localhost:8080/solr/staging" 
+					DocExtensions="pdf,docx,doc,xls,xlsx,pptx,ppt">
 					<Urls>
 						<!-- <Url Value="http://localhost:8080/solr/staging" Id="5" />-->
 						<Url Value="http://localhost:8080/solr/staging" Id="8" />
