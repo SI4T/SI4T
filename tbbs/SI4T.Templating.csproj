@@ -39,19 +39,19 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Tridion.Common">
-      <HintPath>..\..\SI4Tref\2011SP1\Tridion.Common.dll</HintPath>
+      <HintPath>..\..\..\..\Ref\Tridion\2011 SP1 HR1\CM.NET\Tridion.Common.dll</HintPath>
     </Reference>
     <Reference Include="Tridion.ContentManager">
-      <HintPath>..\..\SI4Tref\2011SP1\Tridion.ContentManager.dll</HintPath>
+      <HintPath>..\..\..\..\Ref\Tridion\2011 SP1 HR1\CM.NET\Tridion.ContentManager.dll</HintPath>
     </Reference>
     <Reference Include="Tridion.ContentManager.Common">
-      <HintPath>..\..\SI4Tref\2011SP1\Tridion.ContentManager.Common.dll</HintPath>
+      <HintPath>..\..\..\..\Ref\Tridion\2011 SP1 HR1\CM.NET\Tridion.ContentManager.Common.dll</HintPath>
     </Reference>
     <Reference Include="Tridion.ContentManager.Publishing">
-      <HintPath>..\..\SI4Tref\2011SP1\Tridion.ContentManager.Publishing.dll</HintPath>
+      <HintPath>..\..\..\..\Ref\Tridion\2011 SP1 HR1\CM.NET\Tridion.ContentManager.Publishing.dll</HintPath>
     </Reference>
     <Reference Include="Tridion.ContentManager.Templating">
-      <HintPath>..\..\SI4Tref\2011SP1\Tridion.ContentManager.Templating.dll</HintPath>
+      <HintPath>..\..\..\..\Ref\Tridion\2011 SP1 HR1\CM.NET\Tridion.ContentManager.Templating.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
