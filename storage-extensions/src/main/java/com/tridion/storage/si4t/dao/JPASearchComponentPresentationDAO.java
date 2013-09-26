@@ -72,7 +72,7 @@ public class JPASearchComponentPresentationDAO extends JPAComponentPresentationD
 		log.debug("Create.");
 		TridionPublishableItemProcessor tp = new TridionPublishableItemProcessor
 				(
-						itemToCreate.getContent(),
+						new String(itemToCreate.getContent()),
 						FactoryAction.PERSIST,
 						IndexType.COMPONENT_PRESENTATION,
 						Integer.toString(itemToCreate.getPublicationId()),
@@ -82,7 +82,7 @@ public class JPASearchComponentPresentationDAO extends JPAComponentPresentationD
 		String strippedItem = tp.processComponentPresentationSource();
 		if (!Utils.StringIsNullOrEmpty(strippedItem))
 		{
-			itemToCreate.setContent(strippedItem);
+			itemToCreate.setContent(strippedItem.getBytes());
 		}
 		super.create(itemToCreate, componentPresentationType);
 	}
@@ -123,7 +123,7 @@ public class JPASearchComponentPresentationDAO extends JPAComponentPresentationD
 	{
 		log.debug("Update.");
 		TridionPublishableItemProcessor tp = new TridionPublishableItemProcessor(
-				itemToUpdate.getContent(),
+				new String(itemToUpdate.getContent()),
 				FactoryAction.UPDATE,
 				IndexType.COMPONENT_PRESENTATION,
 				Integer.toString(itemToUpdate.getPublicationId()),
@@ -133,7 +133,7 @@ public class JPASearchComponentPresentationDAO extends JPAComponentPresentationD
 		String strippedItem = tp.processComponentPresentationSource();
 		if (!Utils.StringIsNullOrEmpty(strippedItem))
 		{
-			itemToUpdate.setContent(strippedItem);
+			itemToUpdate.setContent(strippedItem.getBytes());
 		}
 		super.update(itemToUpdate, componentPresentationType);
 	}

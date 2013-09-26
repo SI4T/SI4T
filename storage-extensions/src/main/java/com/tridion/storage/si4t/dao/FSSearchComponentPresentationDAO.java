@@ -66,7 +66,8 @@ public class FSSearchComponentPresentationDAO extends FSComponentPresentationDAO
 	{
 		log.debug("Create.");
 		TridionPublishableItemProcessor tp = new TridionPublishableItemProcessor(
-				itemToCreate.getContent(),
+				// TODO: 2013 getContent() does not return a string!
+				new String(itemToCreate.getContent()),
 				FactoryAction.PERSIST,
 				IndexType.COMPONENT_PRESENTATION,
 				Integer.toString(itemToCreate.getPublicationId()),
@@ -76,7 +77,7 @@ public class FSSearchComponentPresentationDAO extends FSComponentPresentationDAO
 		String strippedItem = tp.processComponentPresentationSource();
 		if (!Utils.StringIsNullOrEmpty(strippedItem))
 		{
-			itemToCreate.setContent(strippedItem);
+			itemToCreate.setContent(strippedItem.getBytes());
 		}
 
 		super.create(itemToCreate, componentPresentationType);
@@ -125,7 +126,7 @@ public class FSSearchComponentPresentationDAO extends FSComponentPresentationDAO
 	{
 		log.debug("Update.");
 		TridionPublishableItemProcessor tp = new TridionPublishableItemProcessor(
-				itemToUpdate.getContent(),
+				new String(itemToUpdate.getContent()),
 				FactoryAction.UPDATE,
 				IndexType.COMPONENT_PRESENTATION,
 				Integer.toString(itemToUpdate.getPublicationId()),
@@ -135,7 +136,7 @@ public class FSSearchComponentPresentationDAO extends FSComponentPresentationDAO
 		String strippedItem = tp.processComponentPresentationSource();
 		if (!Utils.StringIsNullOrEmpty(strippedItem))
 		{
-			itemToUpdate.setContent(strippedItem);
+			itemToUpdate.setContent(strippedItem.getBytes());
 		}
 
 		super.update(itemToUpdate, componentPresentationType);
