@@ -108,3 +108,7 @@ Backup*/
 UpgradeLog*.XML
 
 storage-extensions/lib/.DS_Store
+
+storage-extensions/.DS_Store
+
+.DS_Store
