@@ -175,12 +175,12 @@ namespace SI4T.Templating
         /// </summary>
         /// <param name="data">object to serialize</param>
         /// <returns>string containing XML serialization</returns>
-        protected string SerializeObjectToXml(object data)
+        protected string SerializeObjectToXml(object data, XmlSerializerNamespaces namespaces = null)
         {
             StringBuilder sb = new StringBuilder();
             using (XmlWriter xw = XmlWriter.Create(sb, new XmlWriterSettings { OmitXmlDeclaration = true }))
             {
-                SerializeObjectToXml(data, xw);
+                SerializeObjectToXml(data, xw, namespaces);
                 return sb.ToString();
             }
         }
@@ -190,10 +190,13 @@ namespace SI4T.Templating
         /// </summary>
         /// <param name="data">object to serialize</param>
         /// <param name="writer">XmlWriter to write the serialized data to</param>
-        protected void SerializeObjectToXml(object data, XmlWriter writer)
+        protected void SerializeObjectToXml(object data, XmlWriter writer, XmlSerializerNamespaces namespaces=null)
         {
+            if (namespaces == null)
+            {
+                namespaces = new XmlSerializerNamespaces();
+            }
             XmlSerializer serializer = new XmlSerializer(data.GetType());
-            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
             serializer.Serialize(writer, data, namespaces);
         }
 
@@ -248,11 +251,13 @@ namespace SI4T.Templating
         /// <param name="searchData">search data to serialize</param>
         protected void SerializeAndPushToPackage(SearchData searchData)
         {
-            Logger.Debug(SerializeObjectToXml(searchData));
             if (searchData.HasIndexData())
             {
+                //prevent unwanted namespaces from appearing in the output
+                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                ns.Add("", ""); 
                 XmlDocument xmlData = new XmlDocument();
-                xmlData.LoadXml(SerializeObjectToXml(searchData));
+                xmlData.LoadXml(SerializeObjectToXml(searchData, ns));
                 XmlElement body = searchData.GetCatchAllElement();
                 XmlElement custom = searchData.GetCustomElement();
                 XmlNode bodyNode = xmlData.ImportNode(body, true);

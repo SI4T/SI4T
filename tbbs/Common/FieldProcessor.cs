@@ -20,7 +20,6 @@ namespace SI4T.Templating
         public XmlDocument IndexData { get; set; }
         public string Title { get; set; }
         public int MinimumComponentTemplatePrio { get; set; }
-        
         private List<string> _processedComponents = new List<string>();
 
         public FieldProcessor()
@@ -121,7 +120,7 @@ namespace SI4T.Templating
         {
             foreach (var val in values)
             {
-                IndexData.SelectSingleNode("/data/custom").AppendChild(CreateElement(fieldName,encoded,val.ToString()));
+                IndexData.SelectSingleNode("/*/*[local-name()='custom']").AppendChild(CreateElement(fieldName,encoded,val.ToString()));
             }
         }
 
@@ -142,7 +141,7 @@ namespace SI4T.Templating
         /// <returns></returns>
         public virtual XmlElement GetCatchAllElement()
         {
-            return IndexData.SelectSingleNode("/data/body") as XmlElement;
+            return IndexData.SelectSingleNode("/*/*[local-name()='body']") as XmlElement;
         }
 
         /// <summary>
@@ -151,7 +150,7 @@ namespace SI4T.Templating
         /// <returns></returns>
         public virtual XmlElement GetCustomElement()
         {
-            return IndexData.SelectSingleNode("/data/custom") as XmlElement;
+            return IndexData.SelectSingleNode("/*/*[local-name()='custom']") as XmlElement;
         }
 
         /// <summary>
@@ -163,18 +162,19 @@ namespace SI4T.Templating
         {
             foreach (var field in fields)
             {
-                //A field is indexed if we are excluding by default and the field is in the set of managed fields,
-                //OR we are including by default and the field is NOT in the set of managed fields
-                if ((settings.ExcludeByDefault == settings.ManagedFields.Contains(field.Name)))
+                if (field is EmbeddedSchemaField)
                 {
-                    if (field is EmbeddedSchemaField)
+                    foreach (var subfields in (field as EmbeddedSchemaField).Values)
                     {
-                        foreach (var subfields in (field as EmbeddedSchemaField).Values)
-                        {
-                            ProcessFields(subfields, settings);
-                        }
+                        ProcessFields(subfields, settings);
                     }
-                    else
+                }
+                else
+                {
+                    //A field is indexed if we are excluding by default and the field is in the set of managed fields,
+                    //OR we are including by default and the field is NOT in the set of managed fields
+                    //OR there is a mapping for it in the custom field map
+                    if ((settings.ExcludeByDefault == settings.ManagedFields.Contains(field.Name)) || settings.FieldMap.ContainsKey(field.Name))
                     {
                         ProcessField(field, settings);
                     }
@@ -282,14 +282,14 @@ namespace SI4T.Templating
                         processed = true;
                     }
                 }
-                else if (targetField != null && (targetField.IsMultiValue || IndexData.SelectSingleNode("/data/custom/" + targetField.Name) == null))
+                else if (targetField != null && (targetField.IsMultiValue || IndexData.SelectSingleNode("/*/*[local-name()='custom']/*[local-name()='" + targetField.Name + "']") == null))
                 {
                     SetCustomFieldValue(targetField.Name, value, encoded);
                     processed = true;
                 }
                 if (!processed)
                 {
-                    IndexData.SelectSingleNode("data/body").AppendChild(CreateElement(null, encoded, value));
+                    IndexData.SelectSingleNode("*/*[local-name()='body']").AppendChild(CreateElement(null, encoded, value));
                 }
             }
         }

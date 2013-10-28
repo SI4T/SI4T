@@ -182,10 +182,16 @@ namespace SI4T.Templating
         /// <param name="settings">field processor settings</param>
         public virtual void ProcessComponentData(Component component, FieldProcessorSettings settings)
         {
-            ItemFields fields = new ItemFields(component.Content,component.Schema);
             _processor.SetComponentAsProcessed(component.Id);
-            _processor.ProcessData(fields, settings);
-            ProcessMetadata(component, settings);
+            if (component.IsIndexed())
+            {
+                if (component.Content != null)
+                {
+                    ItemFields fields = new ItemFields(component.Content, component.Schema);
+                    _processor.ProcessData(fields, settings);
+                }
+                ProcessMetadata(component, settings);
+            }
         }
 
         /// <summary>
