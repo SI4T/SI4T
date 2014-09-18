@@ -121,7 +121,7 @@ namespace SI4T.Templating
         public virtual void ProcessComponentPresentation(ComponentPresentation cp, List<string> flaggedDcps)
         {
             string id = GetDcpIdentifier(cp);
-            if (cp.ComponentTemplate.IsIndexed(_processor.MinimumComponentTemplatePrio) && flaggedDcps != null && !flaggedDcps.Contains(id))
+            if (cp.ComponentTemplate.IsIndexed(_processor.MinimumComponentTemplatePrio) && (flaggedDcps == null || !flaggedDcps.Contains(id)))
             {
                 this.Url = GetUrlForDcp(cp);
                 FieldProcessorSettings settings = cp.ComponentTemplate.GetFieldProcessorSettings();
