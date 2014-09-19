@@ -136,18 +136,21 @@ namespace SI4T.Templating
         /// <param name="settings">field processor settings</param>
         public virtual void ProcessComponent(Component comp, FieldProcessorSettings settings)
         {
-            this.PublicationId = comp.ContextRepository.Id.ItemId;
-            this.ItemType = 16;
-            this.SchemaId = comp.Schema.Id.ItemId;
-            ProcessComponentData(comp, settings);
-            _hasIndexData = true;
-            if (String.IsNullOrEmpty(_processor.Title))
+            if (comp.IsIndexed())
             {
-                this.Title = comp.Title;
-            }
-            else
-            {
-                this.Title = _processor.Title;
+                this.PublicationId = comp.ContextRepository.Id.ItemId;
+                this.ItemType = 16;
+                this.SchemaId = comp.Schema.Id.ItemId;
+                ProcessComponentData(comp, settings);
+                _hasIndexData = true;
+                if (String.IsNullOrEmpty(_processor.Title))
+                {
+                    this.Title = comp.Title;
+                }
+                else
+                {
+                    this.Title = _processor.Title;
+                }
             }
         }
 
