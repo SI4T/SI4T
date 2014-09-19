@@ -28,6 +28,11 @@ namespace SI4T.Templating
                     return false;
                 }
             }
+            //Recursive check for Structure Groups and Folders
+            if (item is OrganizationalItem && item.OrganizationalItem != null && item.OrganizationalItem.Id.ItemId != item.Id.ItemId)
+            {
+                return item.OrganizationalItem.IsIndexed();
+            }
             return true;
         }
 

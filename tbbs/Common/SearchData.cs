@@ -70,7 +70,7 @@ namespace SI4T.Templating
         public virtual List<string> ProcessPage(Page page)
         {
             List<string> processedDcps = new List<string>();
-            if (page.IsIndexed() && page.PageTemplate.IsIndexed())
+            if (page.IsIndexed() && page.PageTemplate.IsIndexed() && page.OrganizationalItem.IsIndexed())
             {
                 this.Url = page.PublishLocationUrl;
                 this.SchemaId = page.ComponentPresentations.Count > 0 ? page.ComponentPresentations[0].Component.Schema.Id.ItemId: 0;
