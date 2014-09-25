@@ -48,8 +48,9 @@ namespace SI4T.Query.Solr
             {
                 string url = BuildQueryUrl(SetParameters(parameters));
                 //_log.DebugFormat("Query: {0}", url);
+                results.QueryUrl = url;
                 string data = GetData(url);
-				results = ProcessResults(results, data);
+                results = ProcessResults(results, data);
                 results.PageSize = Int32.Parse(parameters["rows"]);
                 //_log.DebugFormat("{0} Results from Query: {1}", results.Total, url);
             }

@@ -14,6 +14,7 @@ namespace SI4T.Query.Models
         public bool HasError { get; set; }
         public string ErrorDetail { get; set; }
         public string QueryText { get; set; }
+        public string QueryUrl { get; set; }
         public SearchResults()
         {
             Items = new List<SearchResult>();
