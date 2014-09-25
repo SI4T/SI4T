@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SI4T.Query</id>
+    <version>1.0.2</version>
+    <authors>si4towners</authors>
+    <owners>si4towners</owners>
+    <projectUrl>http://si4t.github.io/</projectUrl>
+    <iconUrl>https://avatars2.githubusercontent.com/u/4549410?s=140</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A query library for content indexed by SI4T</description>
+    <releaseNotes>Added QueryUrl property to SearchResults class to aid in debugging client applications.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>SI4T</tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+</package>

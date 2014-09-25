@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SI4T.Mvc</id>
+    <version>1.0.1</version>
+    <authors>si4towners</authors>
+    <owners>si4towners</owners>
+    <projectUrl>http://si4t.github.io/</projectUrl>
+    <iconUrl>https://avatars2.githubusercontent.com/u/4549410?s=140</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Example controller and view to show search results for SI4T indexed content in an ASP.NET MVC project</description>
+    <releaseNotes>Initial Release.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>SI4T</tags>
+    <dependencies>
+		<dependency id="SI4T.Query" version="1.0.0" />
+    </dependencies>
+  </metadata>
+</package>

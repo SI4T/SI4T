@@ -1,0 +1,35 @@
+﻿@model SI4T.Query.Models.SearchResults
+@if (Model.HasError)
+{
+    <div class="error">There was a problem running your search:<br />@Model.ErrorDetail</div>
+}
+else
+{
+    <div>Your search for <strong>@Model.QueryText</strong> returned @Model.Total result@(Model.Total!=1?"s":"").</div><br />
+    if (Model.Total > 0)
+    {
+        <div>
+        @foreach(var item in Model.Items)
+        {
+	        <a href="@item.Url">
+		        <h4>@item.Title</h4>
+	        </a>
+		    <p>
+			    @item.Summary
+		    </p>
+        }
+        </div>
+        if (Model.Total > Model.PageSize)
+        {
+            <div>Showing @Model.Start to @(Model.Start+Model.Items.Count-1) of @Model.Total results</div>
+            if (Model.Start>1)
+            {
+	            <a href="?q=@(Uri.EscapeDataString(Model.QueryText ?? ""))&amp;start=@(Model.Start-Model.PageSize)">&lt; Prev</a>
+            }
+            if (Model.Start+Model.PageSize<Model.Total)
+            {
+	            <a href="?q=@(Uri.EscapeDataString(Model.QueryText ?? ""))&amp;start=@(Model.Start+Model.PageSize)">Next &gt;</a>
+            }
+        }
+    }
+}
