@@ -216,18 +216,41 @@ namespace SI4T.Templating
         }
 
         /// <summary>
-        /// Push an XmlDocument item into the package
+        /// Push an XmlDocument item into the package, optionally adding properties from a related package item
         /// </summary>
         /// <param name="packageItemName">the package item name</param>
         /// <param name="data">the XmlDocument to push</param>
-        protected void PushXmlDocumentToPackage(string packageItemname, XmlDocument data)
+        protected void PushXmlDocumentToPackage(string packageItemname, XmlDocument data, Item relatedItem = null)
         {
+            string id  = null;
+            if (relatedItem != null && relatedItem.Properties.ContainsKey(Item.ItemPropertyTcmUri))
+            {
+                id = relatedItem.Properties[Item.ItemPropertyTcmUri];
+                packageItemname += "_" + id;
+            }
             Item item = m_Package.GetByName(packageItemname);
             if (item != null)
             {
                 m_Package.Remove(item);
             }
-            m_Package.PushItem(packageItemname, m_Package.CreateXmlDocumentItem(ContentType.Xml, data));
+            item = m_Package.CreateXmlDocumentItem(ContentType.Xml, data);
+            if (id!=null)
+            {
+                item.Properties.Add(Constants.PACKAGE_ITEM_PROPERTY_TCMURI, id);
+                if (relatedItem.Properties.ContainsKey(Item.ItemPropertyTargetStructureGroup))
+                {
+                    item.Properties.Add(Constants.PACKAGE_ITEM_PROPERTY_SG, relatedItem.Properties[Item.ItemPropertyTargetStructureGroup]);
+                }
+                else
+                {
+                    item.Properties.Add(Constants.PACKAGE_ITEM_PROPERTY_SG, null);
+                }
+                if (relatedItem.Properties.ContainsKey(Item.ItemPropertyFileName))
+                {
+                    item.Properties.Add(Constants.PACKAGE_ITEM_PROPERTY_FILENAME, relatedItem.Properties[Item.ItemPropertyFileName]);
+                }
+            }
+            m_Package.PushItem(packageItemname, item);
         }
 
         /// <summary>
@@ -249,7 +272,7 @@ namespace SI4T.Templating
         /// Serialize search index data and push it into the package
         /// </summary>
         /// <param name="searchData">search data to serialize</param>
-        protected void SerializeAndPushToPackage(SearchData searchData)
+        protected void SerializeAndPushToPackage(SearchData searchData, Item relatedBinaryItem = null)
         {
             if (searchData.HasIndexData())
             {
@@ -264,7 +287,7 @@ namespace SI4T.Templating
                 XmlNode customNode = xmlData.ImportNode(custom, true);
                 xmlData.DocumentElement.AppendChild(bodyNode);
                 xmlData.DocumentElement.AppendChild(customNode);
-                this.PushXmlDocumentToPackage(Constants.PACKAGE_ITEM_SEARCHDATA, xmlData);
+                this.PushXmlDocumentToPackage(Constants.PACKAGE_ITEM_SEARCHDATA, xmlData, relatedBinaryItem);
             }
         }
 

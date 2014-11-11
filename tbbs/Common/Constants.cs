@@ -17,10 +17,16 @@ namespace SI4T.Templating
         public const string FIELD_CUSTOMFIELDMAP = "SearchIndexCustomFieldMap";
         public const string FIELD_LINKFIELDSTOEMBED = "SearchIndexLinkFieldsToEmbed";
         public const string FIELD_MIN_CT_PRIO = "SearchIndexMinTemplatePrio";
+        public const string FIELD_INDEXED_BINARY_EXTENSIONS = "SearchIndexBinaryExtensions";
         
         //Field values
         public const string FIELDVALUE_INCLUDE = "[include]";
         public const string FIELDVALUE_EXCLUDE = "[exclude]";
+
+        //Package item properties
+        public const string PACKAGE_ITEM_PROPERTY_TCMURI = "IndexedBinaryTcmUri";
+        public const string PACKAGE_ITEM_PROPERTY_SG = "IndexedBinarySG";
+        public const string PACKAGE_ITEM_PROPERTY_FILENAME = "IndexedBinaryFilename";
 
         //Delimiters
         public const string DELIMITER_PATTERN_SEARCHDATA = " INDEX-DATA-START:{0}:INDEX-DATA-END ";

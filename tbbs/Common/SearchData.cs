@@ -136,7 +136,7 @@ namespace SI4T.Templating
         /// <param name="settings">field processor settings</param>
         public virtual void ProcessComponent(Component comp, FieldProcessorSettings settings)
         {
-            if (comp.IsIndexed())
+            if (comp.IsIndexed() && comp.OrganizationalItem.IsIndexed())
             {
                 this.PublicationId = comp.ContextRepository.Id.ItemId;
                 this.ItemType = 16;
