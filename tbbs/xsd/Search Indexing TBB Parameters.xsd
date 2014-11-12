@@ -8,6 +8,7 @@
 				<tcm:Label ElementName="SearchIndexCustomFieldMap" Metadata="false">Field Mapping</tcm:Label>
 				<tcm:Label ElementName="SearchIndexLinkFieldsToEmbed" Metadata="false">Link Fields to Embed</tcm:Label>
 				<tcm:Label ElementName="SearchIndexMinTemplatePrio" Metadata="false">Min CT Prio for Inclusion in Index Data (200=Medium)</tcm:Label>
+				<tcm:Label ElementName="SearchIndexBinaryExtensions" Metadata="false">Binary extensions to index (comma separated eg: doc, docx, pdf)</tcm:Label>
 			</tcm:Labels>
 		</xsd:appinfo>
 	</xsd:annotation>
@@ -57,6 +58,13 @@
 					</xsd:annotation>
 				</xsd:element>
 				<xsd:element name="SearchIndexMinTemplatePrio" minOccurs="0" maxOccurs="1" type="xsd:decimal">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<tcm:ExtensionXml xmlns:tcm="http://www.tridion.com/ContentManager/5.0"></tcm:ExtensionXml>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="SearchIndexBinaryExtensions" minOccurs="0" maxOccurs="1" type="xsd:normalizedString">
 					<xsd:annotation>
 						<xsd:appinfo>
 							<tcm:ExtensionXml xmlns:tcm="http://www.tridion.com/ContentManager/5.0"></tcm:ExtensionXml>
