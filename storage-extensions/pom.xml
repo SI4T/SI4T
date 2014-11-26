@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.si4t</groupId>
+    <artifactId>si4t-se</artifactId>
+    <version>1.1-SNAPSHOT</version>
+    <dependencies>
+
+
+    </dependencies>
+    <properties>
+        <!--
+            Supported Tridion versions are:
+            6.0.0 - Tridion 2011
+            6.1.0 - Tridion 2011 SP1
+            7.0.0 - Tridion 2013
+            7.1.0 - Tridion 2013 SP1
+        -->
+        <tridion.version>7.1.0</tridion.version>
+    </properties>
+    <packaging>jar</packaging>
+    <profiles>
+        <profile>
+            <id>7.1.0</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                    <version>1.6.4</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.tridion</groupId>
+                    <artifactId>cd_core</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.tridion</groupId>
+                    <artifactId>cd_model</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.tridion</groupId>
+                    <artifactId>cd_datalayer</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-beans</artifactId>
+                    <version>3.1.0.RELEASE</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                    <version>3.1.0.RELEASE</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
+                    <version>3.1.0.RELEASE</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context-support</artifactId>
+                    <version>3.1.0.RELEASE</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
+</project>
