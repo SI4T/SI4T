@@ -6,11 +6,7 @@
 
     <groupId>org.si4t</groupId>
     <artifactId>si4t-se</artifactId>
-    <version>1.1-SNAPSHOT</version>
-    <dependencies>
-
-
-    </dependencies>
+    <version>1.1</version>
     <properties>
         <!--
             Supported Tridion versions are:
@@ -20,6 +16,7 @@
             7.1.0 - Tridion 2013 SP1
         -->
         <tridion.version>7.1.0</tridion.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <packaging>jar</packaging>
     <profiles>
@@ -29,6 +26,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <dependencies>
+                <!-- Direct Dependencies start here -->
                 <dependency>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
@@ -69,6 +67,13 @@
                     <artifactId>spring-context-support</artifactId>
                     <version>3.1.0.RELEASE</version>
                 </dependency>
+                <dependency>
+                    <groupId>org.hibernate.javax.persistence</groupId>
+                    <artifactId>hibernate-jpa-2.0-api</artifactId>
+                    <version>1.0.1.Final</version>
+                </dependency>
+
+                <!-- Indirect Dependencies start here -->
             </dependencies>
         </profile>
     </profiles>

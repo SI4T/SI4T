@@ -114,3 +114,4 @@ storage-extensions/.DS_Store
 storage-extensions/dist/.DS_Store
 
 .DS_Store
+storage-extensions/target
