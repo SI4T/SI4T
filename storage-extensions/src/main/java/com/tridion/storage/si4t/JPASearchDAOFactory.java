@@ -16,9 +16,10 @@
 
 package com.tridion.storage.si4t;
 
-import java.lang.reflect.Field;
-import java.text.ParseException;
-
+import com.tridion.broker.StorageException;
+import com.tridion.configuration.Configuration;
+import com.tridion.configuration.ConfigurationException;
+import com.tridion.storage.persistence.JPADAOFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -27,10 +28,8 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.tridion.broker.StorageException;
-import com.tridion.configuration.Configuration;
-import com.tridion.configuration.ConfigurationException;
-import com.tridion.storage.persistence.JPADAOFactory;
+import java.lang.reflect.Field;
+import java.text.ParseException;
 
 /**
  * An extended factory class responsible for deploying Tridion Items 
@@ -186,7 +185,7 @@ public class JPASearchDAOFactory extends JPADAOFactory implements ApplicationCon
 			super.commitTransaction(transactionId);
 			long searchStart = System.currentTimeMillis();
 			log.debug("Commit Indexing Start");
-			_processor.triggerIndexing(transactionId);
+			_processor.triggerIndexing(transactionId, this.storageId);
 			log.info("End committing transaction: " + transactionId);
 			log.info("Committing Search took: " + (System.currentTimeMillis() - searchStart) + " ms.");
 			log.info("Total Commit Time was: " + (System.currentTimeMillis() - start) + " ms.");

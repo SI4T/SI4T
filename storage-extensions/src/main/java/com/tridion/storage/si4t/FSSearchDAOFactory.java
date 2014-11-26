@@ -16,15 +16,14 @@
 
 package com.tridion.storage.si4t;
 
-import java.text.ParseException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.tridion.broker.StorageException;
 import com.tridion.configuration.Configuration;
 import com.tridion.configuration.ConfigurationException;
 import com.tridion.storage.filesystem.FSDAOFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.text.ParseException;
 
 /**
  * FSSearchDAOFactory
@@ -82,7 +81,7 @@ public class FSSearchDAOFactory extends FSDAOFactory
 			super.commitTransaction(transactionId);
 			long searchStart = System.currentTimeMillis();
 			log.debug("Commit Indexing Start");
-			_processor.triggerIndexing(transactionId);
+			_processor.triggerIndexing(transactionId, this.storageId);
 			log.info("End committing transaction: " + transactionId);
 			log.info("Committing Search took: " + (System.currentTimeMillis() - searchStart) + " ms.");
 			log.info("Total Commit Time was: " + (System.currentTimeMillis() - start) + " ms.");
