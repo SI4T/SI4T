@@ -13,6 +13,7 @@ using System.Xml;
 using Tridion.ContentManager.ContentManagement.Fields;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using Tridion.ContentManager.Publishing;
 
 namespace SI4T.Templating
 {
@@ -266,6 +267,15 @@ namespace SI4T.Templating
                 xmlData.DocumentElement.AppendChild(customNode);
                 this.PushXmlDocumentToPackage(Constants.PACKAGE_ITEM_SEARCHDATA, xmlData);
             }
+        }
+
+        /// <summary>
+        /// Determine whether we are publishing for XPM Session Preview
+        /// </summary>
+        /// <returns></returns>
+        protected bool IsFastTrackPublishing()
+        {
+            return m_Engine.RenderMode == RenderMode.PreviewDynamic && m_Engine.PublishingContext.PublicationTarget != null;
         }
 
     }
