@@ -302,7 +302,7 @@ namespace SI4T.Templating
         public virtual string XhtmlToText(string xhtml)
         {
             string res = Regex.Replace(xhtml, "</td>|</th>", " ");
-            res = Regex.Replace(xhtml, "</tr>|</p>|</div>|<br/>", ". ");
+            res = Regex.Replace(xhtml, "</tr>|</p>|</div>|<br/>", " ");
             res = Regex.Replace(res, @"\<[^\>]*\>", "");
             res = Regex.Replace(res, @"\s+", " ");
             return HttpUtility.HtmlDecode(res.Trim());
@@ -316,7 +316,14 @@ namespace SI4T.Templating
             }
             if (targetFieldName == null)
             {
-                return IndexData.CreateTextNode(value + ". ");
+                if (Regex.IsMatch(value, "[?)!.]$")) 
+                {
+                    return IndexData.CreateTextNode(value + " ");                
+                }
+                else
+                {
+                    return IndexData.CreateTextNode(value + ". ");
+                }
             }
             else
             {
