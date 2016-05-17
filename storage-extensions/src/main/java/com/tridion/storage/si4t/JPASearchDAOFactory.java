@@ -45,7 +45,7 @@ import com.tridion.storage.persistence.JPADAOFactory;
  * @since 1.00
  */
 @Component("JPASearchDAOFactory")
-@Scope("singleton")
+@Scope("prototype")
 public class JPASearchDAOFactory extends JPADAOFactory implements ApplicationContextAware
 {
 	private Logger log = LoggerFactory.getLogger(JPASearchDAOFactory.class);
