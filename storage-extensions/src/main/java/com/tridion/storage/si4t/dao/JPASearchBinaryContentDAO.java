@@ -15,13 +15,6 @@
  */
 package com.tridion.storage.si4t.dao;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.tridion.broker.StorageException;
 import com.tridion.configuration.Configuration;
@@ -33,6 +26,13 @@ import com.tridion.storage.si4t.IndexType;
 import com.tridion.storage.si4t.SearchIndexProcessor;
 import com.tridion.storage.si4t.TridionBinaryProcessor;
 import com.tridion.storage.si4t.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  * JPASearchBinaryContentDAO.
@@ -45,9 +45,9 @@ import com.tridion.storage.si4t.Utils;
 @Scope("prototype")
 public class JPASearchBinaryContentDAO extends JPABinaryContentDAO implements BinaryContentDAO
 {
-	private Logger log = LoggerFactory.getLogger(JPASearchBinaryContentDAO.class);
-	private static String DOC_EXTENSIONS_ATTRIBUTE = "DocExtensions";
-	private static String INDEXER_NODE = "Indexer";
+	private static final Logger LOG = LoggerFactory.getLogger(JPASearchBinaryContentDAO.class);
+	private static final String DOC_EXTENSIONS_ATTRIBUTE = "DocExtensions";
+	private static final String INDEXER_NODE = "Indexer";
 	private String[] docExtensionsToIndex = null;
 	private Configuration configuration;
 	private String storageId;
@@ -56,7 +56,7 @@ public class JPASearchBinaryContentDAO extends JPABinaryContentDAO implements Bi
 	{
 		super(storageId, entityManagerFactory, entityManager, storageName);
 		this.storageId = storageId;
-		log.trace("JPASearchBinaryContentDAO init. (EM)");
+		LOG.trace("JPASearchBinaryContentDAO init. (EM)");
 
 		this.configuration = SearchIndexProcessor.getIndexerConfiguration(storageId);
 		this.setIndexableFileExtensions();
@@ -67,14 +67,14 @@ public class JPASearchBinaryContentDAO extends JPABinaryContentDAO implements Bi
 	{
 		super(storageId, entityManagerFactory, storageName);
 		this.storageId = storageId;
-		log.trace("JPASearchBinaryContentDAO init.");
+		LOG.trace("JPASearchBinaryContentDAO init.");
 	}
 
 	private void setIndexableFileExtensions() throws ConfigurationException
 	{
 		if (configuration != null)
 		{
-			log.debug("Configuration: " + configuration.toString());
+			LOG.debug("Configuration: " + configuration.toString());
 			String extensions = configuration.getChild(INDEXER_NODE).getAttribute(DOC_EXTENSIONS_ATTRIBUTE);
 			if (!Utils.StringIsNullOrEmpty(extensions))
 			{
@@ -100,10 +100,11 @@ public class JPASearchBinaryContentDAO extends JPABinaryContentDAO implements Bi
 	public void create(BinaryContent binaryContent, String relativePath) throws StorageException
 	{
 		super.create(binaryContent, relativePath);
+
 		if (Utils.StringArrayContains(docExtensionsToIndex, Utils.GetBinaryFileExtension(relativePath)))
 		{
-			log.info("Found a binary to index (Create): " + relativePath);
-			TridionBinaryProcessor.registerAddition(binaryContent, relativePath, relativePath, log, this.storageId);
+			LOG.info("Found a binary to index (Create): " + relativePath);
+			TridionBinaryProcessor.registerAddition(binaryContent, relativePath, relativePath, this.storageId);
 		}
 	}
 
@@ -114,7 +115,7 @@ public class JPASearchBinaryContentDAO extends JPABinaryContentDAO implements Bi
 	public void remove(int publicationId, int binaryId, String variantId, String relativePath) throws StorageException
 	{
 		super.remove(publicationId, binaryId, variantId, relativePath);
-		TridionBinaryProcessor.registerItemRemoval("binary:" + publicationId + "-" + binaryId, IndexType.BINARY, log, Integer.toString(publicationId), this.storageId);
+		TridionBinaryProcessor.registerItemRemoval("binary:" + publicationId + "-" + binaryId, IndexType.BINARY, LOG, Integer.toString(publicationId), this.storageId);
 	}
 
 	/* (non-Javadoc)
@@ -124,14 +125,16 @@ public class JPASearchBinaryContentDAO extends JPABinaryContentDAO implements Bi
 	public void update(BinaryContent binaryContent, String originalRelativePath, String newRelativePath) throws StorageException
 	{
 		super.update(binaryContent, originalRelativePath, newRelativePath);
-		log.info("Checking update for: " + originalRelativePath);
+		LOG.info("Checking update for: " + originalRelativePath);
 		
 		String fileExtension = Utils.GetBinaryFileExtension(newRelativePath);
-		
+
+
+
 		if (Utils.StringArrayContains(docExtensionsToIndex,fileExtension.toLowerCase()))
 		{
-			log.info("Found a binary to index (Update): " + newRelativePath);
-			TridionBinaryProcessor.registerAddition(binaryContent, originalRelativePath, newRelativePath, log, this.storageId);
+			LOG.info("Found a binary to index (Update): " + newRelativePath);
+			TridionBinaryProcessor.registerAddition(binaryContent, originalRelativePath, newRelativePath, this.storageId);
 		}
 	}
 

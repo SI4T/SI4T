@@ -29,7 +29,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
-import java.text.ParseException;
 
 /**
  * An extended factory class responsible for deploying Tridion Items 
@@ -47,9 +46,9 @@ import java.text.ParseException;
 @Scope("singleton")
 public class JPASearchDAOFactory extends JPADAOFactory implements ApplicationContextAware
 {
-	private Logger log = LoggerFactory.getLogger(JPASearchDAOFactory.class);
+	private static final Logger LOG = LoggerFactory.getLogger(JPASearchDAOFactory.class);
 	private String storageId = "";
-	private SearchIndexProcessor _processor;
+	private SearchIndexProcessor searchIndexProcessor;
 
 	/*
 	 * Spring specific, thanks to DN
@@ -60,7 +59,7 @@ public class JPASearchDAOFactory extends JPADAOFactory implements ApplicationCon
 	{
 		super(null, "MSSQL");// not important what we sent. This instance is
 								// never going to be used
-		log.trace("Spring Constructor init.");
+		LOG.trace("Spring Constructor init.");
 	}
 
 	/*
@@ -75,11 +74,11 @@ public class JPASearchDAOFactory extends JPADAOFactory implements ApplicationCon
 		// 'applicationContext'.
 		try
 		{
-			setPrivateField(this, "applicationContext", APPLICATION_CONTEXT, log);
+			setPrivateField(this, "applicationContext", APPLICATION_CONTEXT, LOG);
 		}
 		catch (IllegalAccessException e)
 		{
-			log.error(e.getMessage());
+			LOG.error(e.getMessage());
 		}
 
 		// configure the bundle like we normally do
@@ -96,7 +95,7 @@ public class JPASearchDAOFactory extends JPADAOFactory implements ApplicationCon
 	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException
 	{
 		APPLICATION_CONTEXT = applicationContext;
-		log.trace("Setting app context from spring.");
+		LOG.trace("Setting app context from spring.");
 
 	}
 
@@ -159,12 +158,11 @@ public class JPASearchDAOFactory extends JPADAOFactory implements ApplicationCon
 		super.configure(storageDAOBundleConfiguration);
 		// Get the instance here, because Spring instantiates the JPADAOFactory
 		// twice.
-		log.trace("Fetching SearchProcessor instance.");
-		_processor = SearchIndexProcessor.getInstance();
-		_processor.configureStorageInstance(storageId, storageDAOBundleConfiguration);
-		log.trace("Processor instance number: " + _processor.getInstanceNumber());
-		log.trace("Instances of Search Index: ");
-		_processor.logSearchIndexInstances();
+		LOG.trace("Fetching SearchProcessor instance.");
+		searchIndexProcessor = SearchIndexProcessor.getInstance();
+		searchIndexProcessor.configureStorageInstance(storageId, storageDAOBundleConfiguration);
+		LOG.trace("Instances of Search Index: ");
+		searchIndexProcessor.logSearchIndexInstances();
 	}
 
 	/*
@@ -180,15 +178,16 @@ public class JPASearchDAOFactory extends JPADAOFactory implements ApplicationCon
 	{
 		try
 		{
-			log.info("Start committing transaction: " + transactionId);
+
+			LOG.info("Start committing transaction: " + transactionId);
 			long start = System.currentTimeMillis();
 			super.commitTransaction(transactionId);
 			long searchStart = System.currentTimeMillis();
-			log.debug("Commit Indexing Start");
-			_processor.triggerIndexing(transactionId, this.storageId);
-			log.info("End committing transaction: " + transactionId);
-			log.info("Committing Search took: " + (System.currentTimeMillis() - searchStart) + " ms.");
-			log.info("Total Commit Time was: " + (System.currentTimeMillis() - start) + " ms.");
+			LOG.debug("Commit Indexing Start");
+			searchIndexProcessor.triggerIndexing(transactionId, this.storageId);
+			LOG.info("End committing transaction: " + transactionId);
+			LOG.info("Committing Search took: " + (System.currentTimeMillis() - searchStart) + " ms.");
+			LOG.info("Total Commit Time was: " + (System.currentTimeMillis() - start) + " ms.");
 		}
 		catch (StorageException e)
 		{
@@ -201,49 +200,23 @@ public class JPASearchDAOFactory extends JPADAOFactory implements ApplicationCon
 			throw new StorageException(e);
 
 		}
-		catch (ClassNotFoundException e)
-		{
-			this.logException(e);
-			throw new StorageException(e);
-		}
-		catch (InstantiationException e)
-		{
-			this.logException(e);
-			throw new StorageException(e);
-		}
-		catch (IllegalAccessException e)
-		{
-			this.logException(e);
-			throw new StorageException(e);
-		}
-		catch (ConfigurationException e)
-		{
-			this.logException(e);
-			throw new StorageException(e);
-		}
-		catch (ParseException e)
-		{
-			this.logException(e);
-			throw new StorageException(e);
-		}
-
 		finally
 		{
-			SearchIndexProcessor.debugLogRegister(log);
-			SearchIndexProcessor.cleanupRegister(transactionId, log);
+			SearchIndexProcessor.debugLogRegister();
+			SearchIndexProcessor.cleanupRegister(transactionId);
 		}
 	}
 
 	private void logException(Exception e)
 	{
-		log.error(e.getMessage());
-		log.error(Utils.stacktraceToString(e.getStackTrace()));
+		LOG.error(e.getMessage());
+		LOG.error(Utils.stacktraceToString(e.getStackTrace()));
 	}
 
 	@Override
 	public void shutdownFactory()
 	{
-		_processor.shutDownFactory(storageId);
+		searchIndexProcessor.shutDownFactory(storageId);
 		super.shutdownFactory();
 	}
 }

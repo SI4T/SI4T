@@ -15,26 +15,25 @@
  */
 package com.tridion.storage.si4t.dao;
 
-import java.io.IOException;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import com.tridion.broker.StorageException;
 import com.tridion.data.CharacterData;
 import com.tridion.storage.dao.PageDAO;
 import com.tridion.storage.persistence.JPAPageDAO;
-// TODO: Auto-generated Javadoc
 import com.tridion.storage.si4t.FactoryAction;
 import com.tridion.storage.si4t.IndexType;
 import com.tridion.storage.si4t.TridionBaseItemProcessor;
 import com.tridion.storage.si4t.TridionPublishableItemProcessor;
 import com.tridion.storage.si4t.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import java.io.IOException;
+
+// TODO: Auto-generated Javadoc
 
 /**
  * JPASearchPageDAO.

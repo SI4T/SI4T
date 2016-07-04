@@ -174,8 +174,11 @@ public final class SearchIndexProcessor {
 		}
 		ConcurrentHashMap<String, BaseIndexData> transactionActions = NOTIFICATION_REGISTER.get(transactionId);
 
+
+
 		if (!transactionActions.containsKey(indexData.getUniqueIndexId())) {
 			transactionActions.put(indexData.getUniqueIndexId(), indexData);
+
 		} else {
 			// Special case where a publish transaction contains a renamed file
 			// plus a file
@@ -223,7 +226,7 @@ public final class SearchIndexProcessor {
 					LOG.debug("Obtaining ProdSpecs class for: " + data.getStorageId());
 					SearchIndex searchIndexer = INDEXER_HANDLERS.get(data.getStorageId());
 					if (searchIndexer == null) {
-						throw new IndexingException("Could not load ProdSpecs. Check your configuration.");
+						throw new IndexingException("Could not load SearchIndexer. Check your configuration.");
 					}
 					LOG.debug(data.getStorageId() + "::" + searchIndexer.getClass().getName() + "::" + INDEXER_CONFIGURATION.get(data.getStorageId()).toString());
 					try {
@@ -252,20 +255,20 @@ public final class SearchIndexProcessor {
 		}
 	}
 
-	public static void debugLogRegister (Logger log) {
-		if (log.isDebugEnabled()) {
-			log.debug("Register currently contains:");
+	public static void debugLogRegister () {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Register currently contains:");
 			for (Entry<String, ConcurrentHashMap<String, BaseIndexData>> x : NOTIFICATION_REGISTER.entrySet()) {
-				log.debug(x.getKey());
+				LOG.debug(x.getKey());
 				for (Entry<String, BaseIndexData> c : x.getValue().entrySet()) {
-					log.trace(c.getKey() + ":: " + c.getValue().toString());
+					LOG.trace(c.getKey() + ":: " + c.getValue().toString());
 				}
 			}
 		}
 	}
 
-	public static void cleanupRegister (String transactionId, Logger log) {
-		log.debug("Clearing register for transaction:" + transactionId);
+	public static void cleanupRegister (String transactionId) {
+		LOG.debug("Clearing register for transaction:" + transactionId);
 		if (NOTIFICATION_REGISTER.containsKey(transactionId)) {
 			NOTIFICATION_REGISTER.remove(transactionId);
 		}

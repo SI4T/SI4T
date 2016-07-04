@@ -16,8 +16,6 @@
 
 package com.tridion.storage.si4t;
 
-import org.slf4j.Logger;
-
 import com.tridion.storage.BinaryContent;
 import com.tridion.storage.services.LocalThreadTransaction;
 
@@ -37,10 +35,9 @@ public class TridionBinaryProcessor extends TridionBaseItemProcessor
 	 * @param binaryContent
 	 * @param originalRelativePath
 	 * @param newRelativePath
-	 * @param log
 	 * @param storageId
 	 */
-	public static void registerAddition(BinaryContent binaryContent, String originalRelativePath, String newRelativePath, Logger log, String storageId)
+	public static void registerAddition(BinaryContent binaryContent, String originalRelativePath, String newRelativePath, String storageId)
 	{
 		String indexId = "binary:" + Integer.toString(binaryContent.getPublicationId()) + "-" + Integer.toString(binaryContent.getBinaryId());
 		String fileSize = Integer.toString(binaryContent.getObjectSize());
@@ -54,6 +51,6 @@ public class TridionBinaryProcessor extends TridionBaseItemProcessor
 		data.setFileSize(fileSize);
 		data.setFileType(fileExtension);
 		data.setIndexUrl(newRelativePath);
-		SearchIndexProcessor.registerAction(LocalThreadTransaction.getTransactionId(), data, log);
+		SearchIndexProcessor.registerAction(LocalThreadTransaction.getTransactionId(), data);
 	}	
 }

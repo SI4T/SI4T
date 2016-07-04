@@ -15,11 +15,6 @@
  */
 package com.tridion.storage.si4t.dao;
 
-import java.io.File;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.tridion.broker.StorageException;
 import com.tridion.storage.ComponentPresentation;
 import com.tridion.storage.filesystem.FSComponentPresentationDAO;
@@ -30,6 +25,10 @@ import com.tridion.storage.si4t.TridionBaseItemProcessor;
 import com.tridion.storage.si4t.TridionPublishableItemProcessor;
 import com.tridion.storage.si4t.Utils;
 import com.tridion.storage.util.ComponentPresentationTypeEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
 
 /**
  * FSSearchComponentPresentationDAO.
@@ -41,21 +40,21 @@ import com.tridion.storage.util.ComponentPresentationTypeEnum;
 
 public class FSSearchComponentPresentationDAO extends FSComponentPresentationDAO
 {
-	private Logger log = LoggerFactory.getLogger(FSSearchComponentPresentationDAO.class);
+	private static final Logger LOG = LoggerFactory.getLogger(FSSearchComponentPresentationDAO.class);
 	private String storageId = "";
 	
 	public FSSearchComponentPresentationDAO(String storageId, String storageName, File storageLocation)
 	{
 		super(storageId, storageName, storageLocation);
 		this.storageId = storageId;
-		log.debug("FSSearchComponentPresentationDAO Init.");
+		LOG.debug("FSSearchComponentPresentationDAO Init.");
 	}
 
 	public FSSearchComponentPresentationDAO(String storageId, String storageName, File storageLocation, FSEntityManager entityManager)
 	{
 		super(storageId, storageName, storageLocation, entityManager);
 		this.storageId = storageId;
-		log.debug("FSSearchComponentPresentationDAO Init. (EM)");
+		LOG.debug("FSSearchComponentPresentationDAO Init. (EM)");
 	}
 	
 	/* (non-Javadoc)
@@ -64,7 +63,7 @@ public class FSSearchComponentPresentationDAO extends FSComponentPresentationDAO
 	@Override
 	public void create(ComponentPresentation itemToCreate, ComponentPresentationTypeEnum componentPresentationType) throws StorageException
 	{
-		log.debug("Create.");
+		LOG.debug("Create.");
 		TridionPublishableItemProcessor tp = new TridionPublishableItemProcessor(
 				// TODO: 2013 getContent() does not return a string!
 				new String(itemToCreate.getContent()),
@@ -93,11 +92,10 @@ public class FSSearchComponentPresentationDAO extends FSComponentPresentationDAO
 	{
 		// dcp:{pubid}-{compid}-{tempid}
 		super.remove(itemToRemove, componentPresentationType);
-		log.debug("Removal method 1");
+		LOG.debug("Removal method 1");
 		TridionBaseItemProcessor.registerItemRemoval(
 				"dcp:"+itemToRemove.getPublicationId()+"-"+itemToRemove.getComponentId()+"-"+itemToRemove.getTemplateId(),
-				IndexType.COMPONENT_PRESENTATION,
-				log,
+				IndexType.COMPONENT_PRESENTATION, LOG,
 				Integer.toString(itemToRemove.getPublicationId()), this.storageId);
 	}
 
@@ -110,11 +108,10 @@ public class FSSearchComponentPresentationDAO extends FSComponentPresentationDAO
 	public void remove(int publicationId, int componentId, int templateId, ComponentPresentationTypeEnum componentPresentationType) throws StorageException
 	{
 		super.remove(publicationId, componentId, templateId, componentPresentationType);
-		log.debug("Removal method 2");
+		LOG.debug("Removal method 2");
 		TridionBaseItemProcessor.registerItemRemoval(
 				"dcp:"+publicationId+"-"+componentId+"-"+templateId,
-				IndexType.COMPONENT_PRESENTATION,
-				log,
+				IndexType.COMPONENT_PRESENTATION, LOG,
 				Integer.toString(publicationId), this.storageId);
 	}
 
@@ -124,7 +121,7 @@ public class FSSearchComponentPresentationDAO extends FSComponentPresentationDAO
 	@Override
 	public void update(ComponentPresentation itemToUpdate, ComponentPresentationTypeEnum componentPresentationType) throws StorageException
 	{
-		log.debug("Update.");
+		LOG.debug("Update.");
 		TridionPublishableItemProcessor tp = new TridionPublishableItemProcessor(
 				new String(itemToUpdate.getContent()),
 				FactoryAction.UPDATE,

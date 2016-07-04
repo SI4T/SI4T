@@ -31,13 +31,13 @@ public class TridionBaseItemProcessor
 {
 	protected static void registerItemAddition(SearchIndexData data, Logger log)
 	{
-		SearchIndexProcessor.registerAction(LocalThreadTransaction.getTransactionId(), data, log);
+		SearchIndexProcessor.registerAction(LocalThreadTransaction.getTransactionId(), data);
 	}
 
 	public static void registerItemRemoval(String indexId, IndexType type, Logger log, String publicationId, String storageId)
 	{
 		BaseIndexData removalData = new BaseIndexData(FactoryAction.REMOVE, type, publicationId, storageId);
 		removalData.setUniqueIndexId(indexId);
-		SearchIndexProcessor.registerAction(LocalThreadTransaction.getTransactionId(), removalData, log);
+		SearchIndexProcessor.registerAction(LocalThreadTransaction.getTransactionId(), removalData);
 	}
 }

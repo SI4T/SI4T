@@ -15,11 +15,6 @@
  */
 package com.tridion.storage.si4t.dao;
 
-import java.io.File;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.tridion.broker.StorageException;
 import com.tridion.configuration.Configuration;
 import com.tridion.configuration.ConfigurationException;
@@ -30,6 +25,10 @@ import com.tridion.storage.si4t.IndexType;
 import com.tridion.storage.si4t.SearchIndexProcessor;
 import com.tridion.storage.si4t.TridionBinaryProcessor;
 import com.tridion.storage.si4t.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
 
 /**
  * FSSearchBinaryContentDAO.
@@ -40,7 +39,7 @@ import com.tridion.storage.si4t.Utils;
  */
 public class FSSearchBinaryContentDAO extends FSBinaryContentDAO
 {
-	private Logger log = LoggerFactory.getLogger(FSSearchBinaryContentDAO.class);
+	private static final Logger LOG = LoggerFactory.getLogger(FSSearchBinaryContentDAO.class);
 	private static String DOC_EXTENSIONS_ATTRIBUTE = "DocExtensions";
 	private static String INDEXER_NODE = "Indexer";
 	private String[] docExtensionsToIndex = null;
@@ -50,7 +49,7 @@ public class FSSearchBinaryContentDAO extends FSBinaryContentDAO
 	public FSSearchBinaryContentDAO(String storageId, String storageName, File storageLocation, FSEntityManager entityManager) throws ConfigurationException
 	{
 		super(storageId, storageName, storageLocation, entityManager);
-		log.trace("FSSearchBinaryContentDAO init. (EM)");
+		LOG.trace("FSSearchBinaryContentDAO init. (EM)");
 
 		this.configuration = SearchIndexProcessor.getIndexerConfiguration(storageId);
 		this.storageId = storageId;
@@ -61,14 +60,14 @@ public class FSSearchBinaryContentDAO extends FSBinaryContentDAO
 	{
 		super(storageId, storageName, storageLocation);
 		this.storageId = storageId;
-		log.trace("FSSearchBinaryContentDAO init.");
+		LOG.trace("FSSearchBinaryContentDAO init.");
 	}
 	
 	private void setIndexableFileExtensions() throws ConfigurationException
 	{
 		if (configuration != null)
 		{
-			log.debug("Configuration: " + configuration.toString());
+			LOG.debug("Configuration: " + configuration.toString());
 			String extensions = configuration.getChild(INDEXER_NODE).getAttribute(DOC_EXTENSIONS_ATTRIBUTE);
 			if (!Utils.StringIsNullOrEmpty(extensions))
 			{
@@ -96,8 +95,8 @@ public class FSSearchBinaryContentDAO extends FSBinaryContentDAO
 
 		if (Utils.StringArrayContains(docExtensionsToIndex, Utils.GetBinaryFileExtension(relativePath)))
 		{
-			log.info("Found a binary to index (Create): " + relativePath);
-			TridionBinaryProcessor.registerAddition(binaryContent, relativePath, relativePath, log, this.storageId);
+			LOG.info("Found a binary to index (Create): " + relativePath);
+			TridionBinaryProcessor.registerAddition(binaryContent, relativePath, relativePath, this.storageId);
 		}
 	}
 
@@ -108,14 +107,14 @@ public class FSSearchBinaryContentDAO extends FSBinaryContentDAO
 	public void update(BinaryContent binaryContent, String originalRelativePath, String newRelativePath) throws StorageException
 	{
 		super.update(binaryContent, originalRelativePath, newRelativePath);
-		log.info("Checking update for: " + originalRelativePath);
+		LOG.info("Checking update for: " + originalRelativePath);
 		
 		String fileExtension = Utils.GetBinaryFileExtension(newRelativePath);
 		
 		if (Utils.StringArrayContains(docExtensionsToIndex,fileExtension.toLowerCase()))
 		{
-			log.info("Found a binary to index (Update): " + newRelativePath);
-			TridionBinaryProcessor.registerAddition(binaryContent, originalRelativePath, newRelativePath, log, this.storageId);
+			LOG.info("Found a binary to index (Update): " + newRelativePath);
+			TridionBinaryProcessor.registerAddition(binaryContent, originalRelativePath, newRelativePath, this.storageId);
 		}
 	}
 	
@@ -126,6 +125,6 @@ public class FSSearchBinaryContentDAO extends FSBinaryContentDAO
 	public void remove(int publicationId, int binaryId, String variantId, String relativePath) throws StorageException
 	{
 		super.remove(publicationId, relativePath);
-		TridionBinaryProcessor.registerItemRemoval("binary:" + publicationId + "-" + binaryId, IndexType.BINARY, log, Integer.toString(publicationId), this.storageId);
+		TridionBinaryProcessor.registerItemRemoval("binary:" + publicationId + "-" + binaryId, IndexType.BINARY, LOG, Integer.toString(publicationId), this.storageId);
 	}
 }
