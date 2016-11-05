@@ -43,7 +43,7 @@ import java.lang.reflect.Field;
  * @since 1.00
  */
 @Component("JPASearchDAOFactory")
-@Scope("singleton")
+@Scope("prototype")
 public class JPASearchDAOFactory extends JPADAOFactory implements ApplicationContextAware
 {
 	private static final Logger LOG = LoggerFactory.getLogger(JPASearchDAOFactory.class);
