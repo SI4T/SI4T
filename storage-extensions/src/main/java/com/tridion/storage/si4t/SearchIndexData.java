@@ -26,8 +26,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * POJO which holds all data necessary for an indexing action
  * 
  * @author R.S. Kempees
- * @version 1.20
- * @since 1.00
  */
 public class SearchIndexData extends BaseIndexData
 {

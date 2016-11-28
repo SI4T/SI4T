@@ -32,10 +32,9 @@ import java.io.File;
 
 /**
  * FSSearchComponentPresentationDAO.
- * 
+ *
+ * TODO: ensure that this also works when NO DAOSearch Factory is loaded
  * @author R.S. Kempees
- * @version 1.20
- * @since 1.00
  */
 
 public class FSSearchComponentPresentationDAO extends FSComponentPresentationDAO

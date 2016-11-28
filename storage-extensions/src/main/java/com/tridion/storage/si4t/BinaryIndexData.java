@@ -24,7 +24,7 @@ import com.tridion.storage.BinaryContent;
  * @author R.S. Kempees
  * @version 1.20
  * @since 1.00
- * @see BaseIndexData.java
+ * @see BaseIndexData
  */
 public class BinaryIndexData extends BaseIndexData
 {
@@ -147,21 +147,19 @@ public class BinaryIndexData extends BaseIndexData
 	@Override
 	public String toString()
 	{
-		StringBuilder r = new StringBuilder();
-		r.append("[");
-		r.append(this._action);
-		r.append(",");
-		r.append(this._uniqueIndexId);
-		r.append(",");
-		r.append(this._itemType);
-		r.append(",");
-		r.append(this._fileName);
-		r.append(",");
-		r.append(this._fileSize);
-		r.append(",");
-		r.append(this._url);
-		r.append("]");
-		return r.toString();
+		return "[" +
+				this._action +
+				"," +
+				this._uniqueIndexId +
+				"," +
+				this._itemType +
+				"," +
+				this._fileName +
+				"," +
+				this._fileSize +
+				"," +
+				this._url +
+				"]";
 	}
 
 }

@@ -34,14 +34,12 @@ import java.io.File;
  * FSSearchBinaryContentDAO.
  * 
  * @author R.S. Kempees
- * @version 1.20
- * @since 1.00
  */
 public class FSSearchBinaryContentDAO extends FSBinaryContentDAO
 {
 	private static final Logger LOG = LoggerFactory.getLogger(FSSearchBinaryContentDAO.class);
-	private static String DOC_EXTENSIONS_ATTRIBUTE = "DocExtensions";
-	private static String INDEXER_NODE = "Indexer";
+	private static final String DOC_EXTENSIONS_ATTRIBUTE = "DocExtensions";
+	private static final String INDEXER_NODE = "Indexer";
 	private String[] docExtensionsToIndex = null;
 	private Configuration configuration;
 	private String storageId;
@@ -49,11 +47,13 @@ public class FSSearchBinaryContentDAO extends FSBinaryContentDAO
 	public FSSearchBinaryContentDAO(String storageId, String storageName, File storageLocation, FSEntityManager entityManager) throws ConfigurationException
 	{
 		super(storageId, storageName, storageLocation, entityManager);
+
 		LOG.trace("FSSearchBinaryContentDAO init. (EM)");
 
 		this.configuration = SearchIndexProcessor.getIndexerConfiguration(storageId);
 		this.storageId = storageId;
-		this.setIndexableFileExtensions();	
+		this.setIndexableFileExtensions();
+
 	}
 
 	public FSSearchBinaryContentDAO(String storageId, String storageName,	File storageLocation)
@@ -79,10 +79,8 @@ public class FSSearchBinaryContentDAO extends FSBinaryContentDAO
 				{
 					this.docExtensionsToIndex = new String[] { extensions };
 				}
-				return;
 			}
 		}
-		throw new ConfigurationException("Indexable file extensions are not configured.");
 	}
 	
 	/* (non-Javadoc)
