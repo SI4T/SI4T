@@ -15,12 +15,6 @@
  */
 package com.tridion.storage.si4t.dao;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.tridion.broker.StorageException;
 import com.tridion.data.CharacterData;
 import com.tridion.storage.filesystem.FSEntityManager;
@@ -30,31 +24,37 @@ import com.tridion.storage.si4t.IndexType;
 import com.tridion.storage.si4t.TridionBaseItemProcessor;
 import com.tridion.storage.si4t.TridionPublishableItemProcessor;
 import com.tridion.storage.si4t.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * FSSearchPageDAO.
- * 
+ *
+ * TODO: ensure that this also works when NO DAOSearch Factory is loaded
+ *
  * @author R.S. Kempees
- * @version 1.20
- * @since 1.00
  */
 public class FSSearchPageDAO extends FSPageDAO
 {
-	private Logger log = LoggerFactory.getLogger(FSSearchPageDAO.class);
+	private static final Logger LOG = LoggerFactory.getLogger(FSSearchPageDAO.class);
 	private String storageId;
 
 	public FSSearchPageDAO(String storageId, String storageName, File storageLocation, FSEntityManager entityManager)
 	{
 		super(storageId, storageName, storageLocation, entityManager);
 		this.storageId = storageId;
-		log.debug("FSSearchPageDAO init. (EM)");
+		LOG.debug("FSSearchPageDAO init. (EM)");
+
 	}
 	
 	public FSSearchPageDAO(String storageId, String storageName, File storageLocation)
 	{
 		super(storageId, storageName, storageLocation);
 		this.storageId = storageId;
-		log.debug("FSSearchPageDAO init.");
+		LOG.debug("FSSearchPageDAO init.");
 	}
 	/* (non-Javadoc)
 	 * @see com.tridion.storage.filesystem.FSPageDAO#create(com.tridion.data.CharacterData, java.lang.String)
@@ -64,7 +64,7 @@ public class FSSearchPageDAO extends FSPageDAO
 	@Override
 	public void create(CharacterData page, String relativePath) throws StorageException
 	{
-		log.debug("Create.");
+		LOG.debug("Create.");
 		TridionPublishableItemProcessor tp;
 		try
 		{
@@ -81,13 +81,13 @@ public class FSSearchPageDAO extends FSPageDAO
 			}
 			else
 			{
-				log.error("Error processing page: " + relativePath + ", proceeding with deployment of original page");
+				LOG.error("Error processing page: " + relativePath + ", proceeding with deployment of original page");
 				super.create(page, relativePath);
 			}
 		}
 		catch (IOException e)
 		{
-			log.error(Utils.stacktraceToString(e.getStackTrace()));
+			LOG.error(Utils.stacktraceToString(e.getStackTrace()));
 			throw new StorageException("IO Exception: " + e.getLocalizedMessage(),e);
 		}
 	}
@@ -111,6 +111,6 @@ public class FSSearchPageDAO extends FSPageDAO
 	{
 		super.remove(publicationId, relativePath);
 		TridionBaseItemProcessor.registerItemRemoval(
-				"tcm:"+publicationId+"-"+pageId+"-64", IndexType.PAGE, log, Integer.toString(publicationId), this.storageId);
+				"tcm:"+publicationId+"-"+pageId+"-64", IndexType.PAGE, LOG, Integer.toString(publicationId), this.storageId);
 	}
 }

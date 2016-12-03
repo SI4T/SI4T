@@ -1,12 +1,12 @@
 /**
  * Copyright 2011-2013 Radagio & SDL
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,99 +22,114 @@ import com.tridion.configuration.ConfigurationException;
 import com.tridion.storage.filesystem.FSDAOFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * FSSearchDAOFactory
- * 
+ *
  * An extended factory class responsible for deploying Tridion Items 
  * and indexing content. 
- * 
+ *
  * Used in case File System storage is configured in the storage layer.
- * 
+ *
  * @author R.S. Kempees
- * @version 1.20
- * @since 1.00
  */
-public class FSSearchDAOFactory extends FSDAOFactory
-{
-	private static final Logger LOG = LoggerFactory.getLogger(FSSearchDAOFactory.class);
-	private String storageId = "";
-	private final SearchIndexProcessor searchIndexProcessor = SearchIndexProcessor.getInstance();
 
-	public FSSearchDAOFactory(String storageId, String tempFileSystemTransactionLocation)
-	{
-		super(storageId, tempFileSystemTransactionLocation);
-		this.storageId = storageId;
-	}
+@Component ("FSSearchDAOFactory")
+@Qualifier ("FSSearchDAOFactory")
+@Scope ("prototype")
+// Primary hides the other DAO factories. Hence, see this.configure()
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.tridion.storage.filesystem.FSDAOFactory#configure(com.tridion.
-	 * configuration.Configuration)
-	 */
-	@Override
-	public void configure(Configuration configuration) throws ConfigurationException
-	{
-		super.configure(configuration);
-		searchIndexProcessor.configureStorageInstance(storageId, configuration);
-		LOG.debug("Instances of Search Index: ");
-		searchIndexProcessor.logSearchIndexInstances();
-	}
+@Primary
+public class FSSearchDAOFactory extends FSDAOFactory {
+    private static final Logger LOG = LoggerFactory.getLogger(FSSearchDAOFactory.class);
+    private static final String DAO_FACTORY_CLASS_ATTRIBUTE = "Class";
+    private String storageId = "";
+    private boolean isExtendedDaoFactory = true;
 
-	/*
-	 * Overridden entry point for Tridion deploy commits
-	 * (non-Javadoc)
-	 * @see
-	 * com.tridion.storage.filesystem.FSDAOFactory#commitTransaction(java.lang
-	 * .String)
-	 */
-	@Override
-	public void commitTransaction(String transactionId) throws StorageException
-	{
-		try
-		{
-			LOG.info("Start committing transaction: " + transactionId);
-			long start = System.currentTimeMillis();
-			super.commitTransaction(transactionId);
-			long searchStart = System.currentTimeMillis();
-			LOG.debug("Commit Indexing Start");
-			searchIndexProcessor.triggerIndexing(transactionId, this.storageId);
-			LOG.info("End committing transaction: " + transactionId);
-			LOG.info("Committing Search took: " + (System.currentTimeMillis() - searchStart) + " ms.");
-			LOG.info("Total Commit Time was: " + (System.currentTimeMillis() - start) + " ms.");
-		}
-		catch (StorageException e)
-		{
-			this.logException(e);
-			throw e;
-		}
-		catch (IndexingException e)
-		{
-			this.logException(e);
-			throw new StorageException(e);
+    private final SearchIndexProcessor searchIndexProcessor = SearchIndexProcessor.getInstance();
 
-		}
-		finally
-		{
-			SearchIndexProcessor.debugLogRegister();
-			SearchIndexProcessor.cleanupRegister(transactionId);
-		}
-	}
+    public FSSearchDAOFactory (String storageId, String tempFileSystemTransactionLocation) {
+        super(storageId, tempFileSystemTransactionLocation);
+        this.storageId = storageId;
+    }
 
-	private void logException(Exception e)
-	{
-		LOG.error(e.getMessage());
-		LOG.error(Utils.stacktraceToString(e.getStackTrace()));
-	}
+    /*
+     * (non-Javadoc)
+     * @see com.tridion.storage.filesystem.FSDAOFactory#configure(com.tridion.
+     * configuration.Configuration)
+     */
+    @Override
+    public void configure (Configuration configuration) throws ConfigurationException {
+        super.configure(configuration);
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.tridion.storage.filesystem.FSDAOFactory#shutdownFactory()
-	 */
-	@Override
-	public void shutdownFactory()
-	{
-		searchIndexProcessor.shutDownFactory(storageId);
-		super.shutdownFactory();
-	}
+        final String daoFactoryClassName = configuration.getAttribute(DAO_FACTORY_CLASS_ATTRIBUTE);
+
+        if (daoFactoryClassName.equalsIgnoreCase(FSDAOFactory.class.getCanonicalName())) {
+            LOG.info("This seems to be a normal FSDAOFactory ( {} ) for Storage Id: '{}', so not triggering and configuring the extension.", daoFactoryClassName, this.storageId);
+            this.isExtendedDaoFactory = false;
+            return;
+        }
+
+        LOG.debug("Configuration: {}", configuration.toString());
+
+        searchIndexProcessor.configureStorageInstance(storageId, configuration);
+        LOG.debug("Instances of Search Index: ");
+        searchIndexProcessor.logSearchIndexInstances();
+
+    }
+
+    /*
+     * Overridden entry point for Tridion deploy commits
+     * (non-Javadoc)
+     * @see
+     * com.tridion.storage.filesystem.FSDAOFactory#commitTransaction(java.lang
+     * .String)
+     */
+    @Override
+    public void commitTransaction (String transactionId) throws StorageException {
+        try {
+            if (this.isExtendedDaoFactory) {
+                LOG.info("Start committing transaction: " + transactionId);
+                long start = System.currentTimeMillis();
+                super.commitTransaction(transactionId);
+                long searchStart = System.currentTimeMillis();
+                LOG.debug("Commit Indexing Start");
+                searchIndexProcessor.triggerIndexing(transactionId, this.storageId);
+                LOG.info("End committing transaction: " + transactionId);
+                LOG.info("Committing Search took: " + (System.currentTimeMillis() - searchStart) + " ms.");
+                LOG.info("Total Commit Time was: " + (System.currentTimeMillis() - start) + " ms.");
+            } else {
+                LOG.info("Not triggering any special stuff, as this instance for storage Id '{}' needs to behave like the normal DAOFactory",this.storageId);
+                super.commitTransaction(transactionId);
+            }
+        } catch (StorageException e) {
+            LOG.error(e.getLocalizedMessage(),e);
+            throw e;
+        } catch (IndexingException e) {
+            LOG.error(e.getLocalizedMessage(),e);
+            throw new StorageException(e);
+
+        } finally {
+            if (this.isExtendedDaoFactory) {
+                SearchIndexProcessor.debugLogRegister();
+                SearchIndexProcessor.cleanupRegister(transactionId);
+            }
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.tridion.storage.filesystem.FSDAOFactory#shutdownFactory()
+     */
+    @Override
+    public void shutdownFactory () {
+        if (this.isExtendedDaoFactory) {
+            searchIndexProcessor.shutDownFactory(storageId);
+        }
+        super.shutdownFactory();
+    }
 }

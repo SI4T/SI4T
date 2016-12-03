@@ -18,7 +18,6 @@ package com.tridion.storage.si4t;
 
 import com.tridion.configuration.Configuration;
 import com.tridion.configuration.ConfigurationException;
-import com.tridion.storage.si4t.SearchIndexData;
 
 /**
  * SearchIndex.
@@ -31,8 +30,6 @@ import com.tridion.storage.si4t.SearchIndexData;
  * commit of Tridion item deployment.
  * 
  * @author R.S. Kempees
- * @version 1.20
- * @since 1.00
  */
 public interface SearchIndex
 {
@@ -45,9 +42,9 @@ public interface SearchIndex
 	 * enabled. 
 	 * 
 	 * @param configuration the Storage node configuration element
-	 * @throws ConfigurationException
+	 * @throws ConfigurationException Any Configuration Exception
 	 */
-	public void configure(Configuration configuration) throws ConfigurationException;
+	void configure(Configuration configuration) throws ConfigurationException;
 
 	/**
 	 * Adds a SearchIndexData item to be indexed.
@@ -55,7 +52,7 @@ public interface SearchIndex
 	 * @param data the data
 	 * @throws IndexingException the indexing exception
 	 */
-	public void addItemToIndex(SearchIndexData data) throws IndexingException;
+	void addItemToIndex(SearchIndexData data) throws IndexingException;
 
 	/**
 	 * Removes the item from index.
@@ -63,7 +60,7 @@ public interface SearchIndex
 	 * @param data the data
 	 * @throws IndexingException the indexing exception
 	 */
-	public void removeItemFromIndex(BaseIndexData data) throws IndexingException;
+	void removeItemFromIndex(BaseIndexData data) throws IndexingException;
 
 	/**
 	 * Update an item in the search index.
@@ -71,7 +68,7 @@ public interface SearchIndex
 	 * @param data the data
 	 * @throws IndexingException the indexing exception
 	 */
-	public void updateItemInIndex(SearchIndexData data) throws IndexingException;
+	void updateItemInIndex(SearchIndexData data) throws IndexingException;
 
 	/**
 	 * Adds a binary item to be indexed.
@@ -79,7 +76,7 @@ public interface SearchIndex
 	 * @param data the data
 	 * @throws IndexingException the indexing exception
 	 */
-	public void addBinaryToIndex(BinaryIndexData data) throws IndexingException;
+	void addBinaryToIndex(BinaryIndexData data) throws IndexingException;
 
 	/**
 	 * Removes the binary from index.
@@ -87,7 +84,7 @@ public interface SearchIndex
 	 * @param data the data
 	 * @throws IndexingException the indexing exception
 	 */
-	public void removeBinaryFromIndex(BaseIndexData data) throws IndexingException;
+	void removeBinaryFromIndex(BaseIndexData data) throws IndexingException;
 
 	/**
 	 * Commit. 
@@ -97,12 +94,12 @@ public interface SearchIndex
 	 * @param publicationId the publication id
 	 * @throws IndexingException the indexing exception
 	 */
-	public void commit(String publicationId) throws IndexingException;
+	void commit(String publicationId) throws IndexingException;
 
 	/**
 	 * Destroy.
 	 * 
 	 * Should destroy any open clients to free resources.
 	 */
-	public void destroy();
+	void destroy();
 }

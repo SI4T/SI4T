@@ -22,8 +22,6 @@ package com.tridion.storage.si4t;
  * POJO which holds all data necessary for an indexing action
  * 
  * @author R.S. Kempees
- * @version 1.20
- * @since 1.00
  */
 public class BaseIndexData
 {
@@ -129,16 +127,14 @@ public class BaseIndexData
 	@Override
 	public String toString()
 	{
-		StringBuilder r = new StringBuilder();
-		r.append("[");
-		r.append(this._action);
-		r.append(",");
-		r.append(this._uniqueIndexId);
-		r.append(",");
-		r.append(this._itemType);
-		r.append(",");
-		r.append(this._storageId);
-		r.append("]");
-		return r.toString();
+		return "[" +
+				this._action +
+				"," +
+				this._uniqueIndexId +
+				"," +
+				this._itemType +
+				"," +
+				this._storageId +
+				"]";
 	}
 }
