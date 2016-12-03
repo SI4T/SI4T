@@ -38,8 +38,6 @@ import javax.persistence.EntityManagerFactory;
  * JPASearchBinaryContentDAO.
  * 
  * @author R.S. Kempees
- * @version 1.20
- * @since 1.00
  */
 @Component("JPASearchBinaryContentDAO")
 @Scope("prototype")
@@ -86,10 +84,8 @@ public class JPASearchBinaryContentDAO extends JPABinaryContentDAO implements Bi
 				{
 					this.docExtensionsToIndex = new String[] { extensions };
 				}
-				return;
 			}
 		}
-		throw new ConfigurationException("Indexable file extensions are not configured.");
 	}
 	
 	
@@ -137,5 +133,4 @@ public class JPASearchBinaryContentDAO extends JPABinaryContentDAO implements Bi
 			TridionBinaryProcessor.registerAddition(binaryContent, originalRelativePath, newRelativePath, this.storageId);
 		}
 	}
-
 }

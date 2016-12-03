@@ -20,8 +20,6 @@ package com.tridion.storage.si4t;
  * IndexingException.
  * 
  * @author R.S. Kempees
- * @version 1.20
- * @since 1.00
  */
 public class IndexingException extends Exception
 {

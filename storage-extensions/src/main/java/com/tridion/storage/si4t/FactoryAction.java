@@ -20,12 +20,10 @@ package com.tridion.storage.si4t;
  * FactoryAction.
  * 
  * @author R.S. Kempees
- * @version 1.20
- * @since 1.00
  */
 public enum FactoryAction
 {
 	PERSIST,
 	REMOVE,
-	UPDATE;
+	UPDATE
 }

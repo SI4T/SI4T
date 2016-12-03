@@ -15,14 +15,6 @@
  */
 package com.tridion.storage.si4t.dao;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import com.tridion.broker.StorageException;
 import com.tridion.storage.ComponentPresentation;
 import com.tridion.storage.dao.ComponentPresentationDAO;
@@ -33,34 +25,39 @@ import com.tridion.storage.si4t.TridionBaseItemProcessor;
 import com.tridion.storage.si4t.TridionPublishableItemProcessor;
 import com.tridion.storage.si4t.Utils;
 import com.tridion.storage.util.ComponentPresentationTypeEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  * JPASearchComponentPresentationDAO.
  * 
  * @author R.S. Kempees
- * @version 1.20
- * @since 1.00
  */
 @Component("JPASearchComponentPresentationDAO")
 @Scope("prototype")
 public class JPASearchComponentPresentationDAO extends JPAComponentPresentationDAO implements ComponentPresentationDAO
 {
 	
-	private Logger log = LoggerFactory.getLogger(JPASearchComponentPresentationDAO.class);
+	private static final Logger LOG = LoggerFactory.getLogger(JPASearchComponentPresentationDAO.class);
 	private String storageId;
 	
 	public JPASearchComponentPresentationDAO(String storageId, EntityManagerFactory entityManagerFactory, EntityManager entityManager, String storageType)
 	{
 		super(storageId, entityManagerFactory, entityManager, storageType);
 		this.storageId = storageId;
-		log.debug("JPASearchComponentPresentationDAO Init. (EM)");
+		LOG.debug("JPASearchComponentPresentationDAO Init. (EM)");
 	}
 
 	public JPASearchComponentPresentationDAO(String storageId, EntityManagerFactory entityManagerFactory, String storageType)
 	{
 		super(storageId, entityManagerFactory, storageType);
 		this.storageId = storageId;
-		log.debug("JPASearchComponentPresentationDAO Init.");
+		LOG.debug("JPASearchComponentPresentationDAO Init.");
 	}
 	
 	/* (non-Javadoc)
@@ -69,7 +66,7 @@ public class JPASearchComponentPresentationDAO extends JPAComponentPresentationD
 	@Override
 	public void create(ComponentPresentation itemToCreate, ComponentPresentationTypeEnum componentPresentationType) throws StorageException
 	{
-		log.debug("Create.");
+		LOG.debug("Create.");
 		TridionPublishableItemProcessor tp = new TridionPublishableItemProcessor
 				(
 						new String(itemToCreate.getContent()),
@@ -95,9 +92,9 @@ public class JPASearchComponentPresentationDAO extends JPAComponentPresentationD
 	public void remove(ComponentPresentation itemToRemove, ComponentPresentationTypeEnum componentPresentationType) throws StorageException
 	{
 		super.remove(itemToRemove, componentPresentationType);
-		log.debug("Removal method 1");
+		LOG.debug("Removal method 1");
 		TridionBaseItemProcessor.registerItemRemoval(
-				"dcp:"+itemToRemove.getPublicationId()+"-"+itemToRemove.getComponentId() + "-" + itemToRemove.getTemplateId(), IndexType.COMPONENT_PRESENTATION, log, Integer.toString(itemToRemove.getPublicationId()), this.storageId);
+				"dcp:"+itemToRemove.getPublicationId()+"-"+itemToRemove.getComponentId() + "-" + itemToRemove.getTemplateId(), IndexType.COMPONENT_PRESENTATION, LOG, Integer.toString(itemToRemove.getPublicationId()), this.storageId);
 
 	}
 
@@ -109,9 +106,9 @@ public class JPASearchComponentPresentationDAO extends JPAComponentPresentationD
 	public void remove(int publicationId, int componentId, int componentTemplateId, ComponentPresentationTypeEnum componentPresentationType) throws StorageException
 	{
 		super.remove(publicationId, componentId, componentTemplateId, componentPresentationType);
-		log.debug("Removal method 2");
+		LOG.debug("Removal method 2");
 		TridionBaseItemProcessor.registerItemRemoval(
-				"dcp:"+publicationId+"-"+componentId + "-" + componentTemplateId, IndexType.COMPONENT_PRESENTATION, log, Integer.toString(publicationId), this.storageId);
+				"dcp:"+publicationId+"-"+componentId + "-" + componentTemplateId, IndexType.COMPONENT_PRESENTATION, LOG, Integer.toString(publicationId), this.storageId);
 	}
 
 	/* 
@@ -121,7 +118,7 @@ public class JPASearchComponentPresentationDAO extends JPAComponentPresentationD
 	@Override
 	public void update(ComponentPresentation itemToUpdate, ComponentPresentationTypeEnum componentPresentationType) throws StorageException
 	{
-		log.debug("Update.");
+		LOG.debug("Update.");
 		TridionPublishableItemProcessor tp = new TridionPublishableItemProcessor(
 				new String(itemToUpdate.getContent()),
 				FactoryAction.UPDATE,

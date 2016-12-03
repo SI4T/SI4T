@@ -14,24 +14,29 @@ namespace SI4T.Templating
     /// engine when publishing a Page or Dynamic Component Presentation
     /// </summary>
 	[TcmTemplateTitle("Generate Index Data")]
+    [TcmTemplateParameterSchema("resource:SI4T.Templating.xsd.Search Indexing TBB Parameters.xsd")]
 	public class GenerateIndexData : TemplateBase
 	{
 		public override void Transform(Engine engine, Package package)
 		{
             this.Initialize(engine, package);
-            //Initialize field processor from package variables
-            FieldProcessor processor = new FieldProcessor();
-            processor.Initialize(package);
-            SearchData data = new SearchData(processor);
-            if (this.IsPageTemplate)
+
+            if (IsTargetIndexed())
             {
-                UpdateFlaggedDcps(data.ProcessPage(this.GetPage()));
+                //Initialize field processor from package variables
+                FieldProcessor processor = new FieldProcessor();
+                processor.Initialize(package);
+                SearchData data = new SearchData(processor);
+                if (this.IsPageTemplate)
+                {
+                    UpdateFlaggedDcps(data.ProcessPage(this.GetPage()));
+                }
+                else
+                {
+                    data.ProcessComponentPresentation(new Tridion.ContentManager.CommunicationManagement.ComponentPresentation(this.GetComponent(), this.GetComponentTemplate()), GetFlaggedDcps());
+                }
+                SerializeAndPushToPackage(data);
             }
-            else
-            {
-                data.ProcessComponentPresentation(new Tridion.ContentManager.CommunicationManagement.ComponentPresentation(this.GetComponent(), this.GetComponentTemplate()),GetFlaggedDcps());    
-            }
-            SerializeAndPushToPackage(data);
 		}
 
         public virtual List<string> GetFlaggedDcps()
@@ -59,6 +64,13 @@ namespace SI4T.Templating
                 }
             }
             m_Engine.PublishingContext.RenderContext.ContextVariables[Constants.CONTEXT_VARIABLE_FLAGGED_DCPS] = list;
+        }
+
+        protected bool IsTargetIndexed()
+        {
+            //For Tridion next we could check if target supports search, but for now
+            //We just specifically exclude session preview only
+            return !IsFastTrackPublishing();
         }
 	}
 }

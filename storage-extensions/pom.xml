@@ -6,27 +6,73 @@
 
     <groupId>org.si4t</groupId>
     <artifactId>si4t-se</artifactId>
-    <version>1.1</version>
-    <properties>
-        <!--
-            Supported Tridion versions are:
-            6.0.0 - Tridion 2011
-            6.1.0 - Tridion 2011 SP1
-            7.0.0 - Tridion 2013
-            7.1.0 - Tridion 2013 SP1
+    <version>1.2</version>
 
-            TODO: add profiles for all versions
-        -->
-        <tridion.version>7.1.0</tridion.version>
+    <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
     <packaging>jar</packaging>
     <profiles>
         <profile>
+            <id>6.1.0</id>
+            <properties>
+                <tridion.version>6.1.0</tridion.version>
+            </properties>
+            <dependencies>
+                <!-- Direct Dependencies start here -->
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                    <version>1.6.4</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.tridion</groupId>
+                    <artifactId>cd_core</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.tridion</groupId>
+                    <artifactId>cd_model</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.tridion</groupId>
+                    <artifactId>cd_datalayer</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-beans</artifactId>
+                    <version>3.1.0.RELEASE</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                    <version>3.1.0.RELEASE</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
+                    <version>3.1.0.RELEASE</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context-support</artifactId>
+                    <version>3.1.0.RELEASE</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.hibernate.javax.persistence</groupId>
+                    <artifactId>hibernate-jpa-2.0-api</artifactId>
+                    <version>1.0.1.Final</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
             <id>7.1.0</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <properties>
+                <tridion.version>7.1.0</tridion.version>
+            </properties>
             <dependencies>
                 <!-- Direct Dependencies start here -->
                 <dependency>
@@ -81,6 +127,26 @@
         <profile>
             <!-- TODO: update versions-->
             <id>8.1.0</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <tridion.version>8.1.0</tridion.version>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>2.5.1</version>
+                        <inherited>true</inherited>
+                        <configuration>
+                            <source>1.8</source>
+                            <target>1.8</target>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
             <dependencies>
                 <!-- Direct Dependencies start here -->
                 <dependency>
@@ -104,7 +170,7 @@
                     <version>${tridion.version}</version>
                 </dependency>
 
-                <!-- Web 8 new
+                <!-- Web 8 new -->
 
                 <dependency>
                     <groupId>com.tridion</groupId>
@@ -116,7 +182,7 @@
                     <groupId>com.tridion</groupId>
                     <artifactId>cd_common_config_legacy</artifactId>
                     <version>${tridion.version}</version>
-                </dependency>-->
+                </dependency>
 
                 <dependency>
                     <groupId>org.springframework</groupId>
@@ -146,5 +212,12 @@
             </dependencies>
         </profile>
     </profiles>
-
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

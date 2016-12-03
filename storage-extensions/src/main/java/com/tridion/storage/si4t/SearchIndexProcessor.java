@@ -52,13 +52,6 @@ public final class SearchIndexProcessor {
 	private SearchIndexProcessor () {
 	}
 
-	/**
-	 * SingletonHolder.
-	 *
-	 * @author R.S. Kempees
-	 * @version 1.20
-	 * @since 1.00
-	 */
 	private static class SingletonHolder {
 		public static final SearchIndexProcessor INSTANCE = new SearchIndexProcessor();
 	}
@@ -132,13 +125,13 @@ public final class SearchIndexProcessor {
 				INDEXER_HANDLERS.put(storageId, searchIndex);
 				LOG.info("Loaded: " + searchIndexImplementation);
 			} catch (ClassNotFoundException e) {
-				this.logException(e);
+				LOG.error(e.getLocalizedMessage(),e);
 				throw new ConfigurationException("Could not find class: " + searchIndexImplementation, e);
 			} catch (InstantiationException e) {
-				this.logException(e);
+				LOG.error(e.getLocalizedMessage(),e);
 				throw new ConfigurationException("Could instantiate class: " + searchIndexImplementation, e);
 			} catch (IllegalAccessException e) {
-				this.logException(e);
+				LOG.error(e.getLocalizedMessage(),e);
 				throw new ConfigurationException("IllegalAccessException: " + searchIndexImplementation, e);
 			}
 		}
@@ -249,7 +242,7 @@ public final class SearchIndexProcessor {
 						iter.remove();
 					}
 				} else {
-					LOG.debug("Not processing, this entry is for another factory to process: " + storageId + " != " + data.getStorageId());
+					LOG.debug("Not processing, this entry is for another factory to process. This factory belongs to {} and the transaction belongs to: {}",storageId,data.getStorageId());
 				}
 			}
 		}
@@ -342,10 +335,4 @@ public final class SearchIndexProcessor {
 			}
 		}
 	}
-
-	private void logException (Exception e) {
-		LOG.error(e.getMessage());
-		LOG.error(Utils.stacktraceToString(e.getStackTrace()));
-	}
-
 }
