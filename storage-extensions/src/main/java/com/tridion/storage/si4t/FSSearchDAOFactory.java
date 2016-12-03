@@ -41,6 +41,8 @@ import org.springframework.stereotype.Component;
 @Component ("FSSearchDAOFactory")
 @Qualifier ("FSSearchDAOFactory")
 @Scope ("prototype")
+// Primary hides the other DAO factories. Hence, see this.configure()
+
 @Primary
 public class FSSearchDAOFactory extends FSDAOFactory {
     private static final Logger LOG = LoggerFactory.getLogger(FSSearchDAOFactory.class);
