@@ -16,15 +16,12 @@
 
 package com.tridion.storage.si4t;
 
-import java.text.ParseException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.tridion.broker.StorageException;
 import com.tridion.configuration.Configuration;
 import com.tridion.configuration.ConfigurationException;
 import com.tridion.storage.filesystem.FSDAOFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * FSSearchDAOFactory
@@ -40,9 +37,9 @@ import com.tridion.storage.filesystem.FSDAOFactory;
  */
 public class FSSearchDAOFactory extends FSDAOFactory
 {
-	private Logger log = LoggerFactory.getLogger(FSSearchDAOFactory.class);
+	private static final Logger LOG = LoggerFactory.getLogger(FSSearchDAOFactory.class);
 	private String storageId = "";
-	private SearchIndexProcessor _processor = SearchIndexProcessor.getInstance();
+	private final SearchIndexProcessor searchIndexProcessor = SearchIndexProcessor.getInstance();
 
 	public FSSearchDAOFactory(String storageId, String tempFileSystemTransactionLocation)
 	{
@@ -59,10 +56,9 @@ public class FSSearchDAOFactory extends FSDAOFactory
 	public void configure(Configuration configuration) throws ConfigurationException
 	{
 		super.configure(configuration);
-		_processor.configureStorageInstance(storageId, configuration);
-		log.debug("Processor instance number: " + _processor.getInstanceNumber());
-		log.debug("Instances of Search Index: ");
-		_processor.logSearchIndexInstances();
+		searchIndexProcessor.configureStorageInstance(storageId, configuration);
+		LOG.debug("Instances of Search Index: ");
+		searchIndexProcessor.logSearchIndexInstances();
 	}
 
 	/*
@@ -77,15 +73,15 @@ public class FSSearchDAOFactory extends FSDAOFactory
 	{
 		try
 		{
-			log.info("Start committing transaction: " + transactionId);
+			LOG.info("Start committing transaction: " + transactionId);
 			long start = System.currentTimeMillis();
 			super.commitTransaction(transactionId);
 			long searchStart = System.currentTimeMillis();
-			log.debug("Commit Indexing Start");
-			_processor.triggerIndexing(transactionId);
-			log.info("End committing transaction: " + transactionId);
-			log.info("Committing Search took: " + (System.currentTimeMillis() - searchStart) + " ms.");
-			log.info("Total Commit Time was: " + (System.currentTimeMillis() - start) + " ms.");
+			LOG.debug("Commit Indexing Start");
+			searchIndexProcessor.triggerIndexing(transactionId, this.storageId);
+			LOG.info("End committing transaction: " + transactionId);
+			LOG.info("Committing Search took: " + (System.currentTimeMillis() - searchStart) + " ms.");
+			LOG.info("Total Commit Time was: " + (System.currentTimeMillis() - start) + " ms.");
 		}
 		catch (StorageException e)
 		{
@@ -98,43 +94,17 @@ public class FSSearchDAOFactory extends FSDAOFactory
 			throw new StorageException(e);
 
 		}
-		catch (ClassNotFoundException e)
-		{
-			this.logException(e);
-			throw new StorageException(e);
-		}
-		catch (InstantiationException e)
-		{
-			this.logException(e);
-			throw new StorageException(e);
-		}
-		catch (IllegalAccessException e)
-		{
-			this.logException(e);
-			throw new StorageException(e);
-		}
-		catch (ConfigurationException e)
-		{
-			this.logException(e);
-			throw new StorageException(e);
-		}
-		catch (ParseException e)
-		{
-			this.logException(e);
-			throw new StorageException(e);
-		}
-
 		finally
 		{
-			SearchIndexProcessor.debugLogRegister(log);
-			SearchIndexProcessor.cleanupRegister(transactionId, log);
+			SearchIndexProcessor.debugLogRegister();
+			SearchIndexProcessor.cleanupRegister(transactionId);
 		}
 	}
 
 	private void logException(Exception e)
 	{
-		log.error(e.getMessage());
-		log.error(Utils.stacktraceToString(e.getStackTrace()));
+		LOG.error(e.getMessage());
+		LOG.error(Utils.stacktraceToString(e.getStackTrace()));
 	}
 
 	/*
@@ -144,7 +114,7 @@ public class FSSearchDAOFactory extends FSDAOFactory
 	@Override
 	public void shutdownFactory()
 	{
-		_processor.shutDownFactory(storageId);
+		searchIndexProcessor.shutDownFactory(storageId);
 		super.shutdownFactory();
 	}
 }
