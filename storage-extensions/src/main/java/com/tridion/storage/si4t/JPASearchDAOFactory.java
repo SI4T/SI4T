@@ -199,7 +199,7 @@ public class JPASearchDAOFactory extends JPADAOFactory implements ApplicationCon
             throw e;
         } catch (IndexingException e) {
             LOG.error(e.getLocalizedMessage(), e);
-            SearchIndexProcessor.cleanupRegister(transactionId);
+            SearchIndexProcessor.cleanupRegister(transactionId, storageId);
             throw new StorageException(e);
 
         } finally {

@@ -6,7 +6,7 @@
 
     <groupId>org.si4t</groupId>
     <artifactId>si4t-se</artifactId>
-    <version>1.2</version>
+    <version>1.3</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -131,7 +131,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <tridion.version>8.1.0</tridion.version>
+                <tridion.version>8.5.0-1023</tridion.version>
             </properties>
             <build>
                 <plugins>
@@ -181,6 +181,18 @@
                 <dependency>
                     <groupId>com.tridion</groupId>
                     <artifactId>cd_common_config_legacy</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>com.tridion</groupId>
+                    <artifactId>cd_common_config</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>com.tridion</groupId>
+                    <artifactId>cd_common_config_api</artifactId>
                     <version>${tridion.version}</version>
                 </dependency>
 

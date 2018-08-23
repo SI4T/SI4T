@@ -216,7 +216,7 @@ public final class SearchIndexProcessor {
 
 				if (data.getStorageId().equalsIgnoreCase(storageId)) {
 					LOG.trace("Data is: " + data.toString());
-					LOG.debug("Obtaining ProdSpecs class for: " + data.getStorageId());
+					LOG.debug("Obtaining SearchIndex class for: " + data.getStorageId());
 					SearchIndex searchIndexer = INDEXER_HANDLERS.get(data.getStorageId());
 					if (searchIndexer == null) {
 						throw new IndexingException("Could not load SearchIndexer. Check your configuration.");
@@ -260,10 +260,31 @@ public final class SearchIndexProcessor {
 		}
 	}
 
-	public static void cleanupRegister (String transactionId) {
-		LOG.debug("Clearing register for transaction:" + transactionId);
+	public static void cleanupRegister (String transactionId, String storageId) {
+		LOG.debug("Start clearing register for transaction:" + transactionId);
 		if (NOTIFICATION_REGISTER.containsKey(transactionId)) {
-			NOTIFICATION_REGISTER.remove(transactionId);
+
+			ConcurrentHashMap<String, BaseIndexData>  indexableItems = NOTIFICATION_REGISTER.get(transactionId);
+
+			boolean canClear = true;
+			if (indexableItems != null && !indexableItems.isEmpty()) {
+				for (Iterator<Entry<String, BaseIndexData>> iter = indexableItems.entrySet().iterator(); iter.hasNext(); ) {
+					Map.Entry<String, BaseIndexData> actionEntry = iter.next();
+					BaseIndexData data = actionEntry.getValue();
+
+					if (!data.getStorageId().equalsIgnoreCase(storageId)) {
+						canClear = false;
+						LOG.info("Not clearing out transaction yet for storageId: {}. " +
+								"There are items for another storage Id ({})", storageId, data.getStorageId());
+					}
+				}
+			}
+
+			if (canClear) {
+				NOTIFICATION_REGISTER.remove(transactionId);
+				LOG.info("Cleared out transaction with transactionId: {}.", transactionId);
+			}
+
 		}
 	}
 

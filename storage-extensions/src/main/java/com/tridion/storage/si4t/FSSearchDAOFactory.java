@@ -116,7 +116,7 @@ public class FSSearchDAOFactory extends FSDAOFactory {
         } finally {
             if (this.isExtendedDaoFactory) {
                 SearchIndexProcessor.debugLogRegister();
-                SearchIndexProcessor.cleanupRegister(transactionId);
+                SearchIndexProcessor.cleanupRegister(transactionId, storageId);
             }
         }
     }
