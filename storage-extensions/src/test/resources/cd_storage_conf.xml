@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration Version="6.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="file://cd_storage_conf.xsd">
+         xsi:schemaLocation="file:///cd_storage_conf.xsd">
     <Global>
 		<!-- SI4T:
 				Example SI4T / Solr config. Merge with existing config
@@ -25,7 +25,7 @@
 				<Pool Type="jdbc" Size="5" MonitorInterval="60" IdleTimeout="120" CheckoutTimeout="120" />
 				<DataSource Class="com.microsoft.sqlserver.jdbc.SQLServerDataSource">
 					<Property Name="serverName" Value="[SERVERNAME]" />
-					<Property Name="portNumber" Value="[DBPORT]" />
+					<Property Name="portNumber" Value="1433" />
 					<Property Name="databaseName" Value="[DBNAME]" />
 					<Property Name="user" Value="[DBBROKERUSERNAME]" />
 					<Property Name="password" Value="[DBBROKERPASSWORD]" />
@@ -35,7 +35,7 @@
 						pointing the indexer to specific cores for specific Publications.
 				-->
 				<Indexer 
-					Class="org.si4t.solr.SolrIndexer" 
+					Class="org.si4t.DummyIndexer"
 					DefaultCoreUrl="http://localhost:8080/solr/staging" 
 					Mode="http" 
 					DocExtensions="pdf,docx,doc,xls,xlsx,pptx,ppt">
@@ -58,7 +58,7 @@
 				<Pool Type="jdbc" Size="5" MonitorInterval="60" IdleTimeout="120" CheckoutTimeout="120" />
 				<DataSource Class="com.microsoft.sqlserver.jdbc.SQLServerDataSource">
 					<Property Name="serverName" Value="[SERVERNAME]" />
-					<Property Name="portNumber" Value="[DBPORT]" />
+					<Property Name="portNumber" Value="1433" />
 					<Property Name="databaseName" Value="[DBNAME]" />
 					<Property Name="user" Value="[DBBROKERUSERNAME]" />
 					<Property Name="password" Value="[DBBROKERPASSWORD]" />
@@ -67,7 +67,7 @@
 						as well as which binaries to index, the default URL to post documents to as well as
 						pointing the indexer to specific cores for specific Publications.
 				-->
-				<Indexer Class="org.si4t.cloudsearch.CloudSearchIndexer"
+				<Indexer Class="org.si4t.DummyIndexer"
 						 authentication="implicit"
 						 access_key_id=""
 						 secret_access_key=""
@@ -79,7 +79,7 @@
     </Global>
     <ItemTypes defaultStorageId="defaultdb" cached="false">
 		<Publications>
-			<Publication defaultStorageId="otherdatastoreid"/>
+			<Publication defaultStorageId="otherdatastoreid" />
 
 		</Publications>
     </ItemTypes>
