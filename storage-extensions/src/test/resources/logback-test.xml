@@ -12,6 +12,10 @@
         </encoder>
     </appender>
 
+    <logger name="org.hibernate" level="OFF" />
+    <logger name="org.springframework" level="OFF" />
+    <logger name="com.sdl.delivery.licensing.LicenseVerifier" level="OFF" />
+
     <root level="DEBUG">
         <appender-ref ref="STDOUT"/>
     </root>

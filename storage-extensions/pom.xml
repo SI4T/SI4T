@@ -126,7 +126,6 @@
             </dependencies>
         </profile>
         <profile>
-            <!-- TODO: update versions-->
             <id>8.1.0</id>
             <properties>
                 <!-- 8.5.0-1023 -->
@@ -236,7 +235,7 @@
             </activation>
             <properties>
                 <tridion.version>[11.5.0,11.5.1)</tridion.version>
-                <spring.version>4.3.3.RELEASE</spring.version>
+                <spring.version>5.1.20.RELEASE</spring.version>
             </properties>
             <build>
                 <plugins>
@@ -253,7 +252,8 @@
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>3.8.0</version>
                         <configuration>
-                            <release>11</release>
+                            <source>1.8</source>
+                            <target>1.8</target>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -289,6 +289,24 @@
                     <groupId>com.sdl.delivery</groupId>
                     <artifactId>udp-datalayer</artifactId>
                     <version>${tridion.version}</version>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>com.oracle.jdbc</groupId>
+                            <artifactId>oraclepki</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>com.oracle.jdbc</groupId>
+                            <artifactId>ojdbc8</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>com.oracle.jdbc</groupId>
+                            <artifactId>osdt_cert</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>com.oracle.jdbc</groupId>
+                            <artifactId>osdt_core</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
                 <dependency>
                     <groupId>com.sdl.delivery</groupId>
@@ -337,43 +355,51 @@
                     <version>1.0.1.Final</version>
                 </dependency>
 
-                <!-- the rest of the dependencies is needed to run the tests only, not for compilation -->
-<!--                <dependency>-->
-<!--                    <groupId>org.objenesis</groupId>-->
-<!--                    <artifactId>objenesis</artifactId>-->
-<!--                    <version>3.0.1</version>-->
-<!--                </dependency>-->
-<!--                <dependency>-->
-<!--                    <groupId>com.esotericsoftware</groupId>-->
-<!--                    <artifactId>kryo</artifactId>-->
-<!--                    <version>5.0.0</version>-->
-<!--                </dependency>-->
-<!--              -->
-<!--                <dependency>-->
-<!--                    <groupId>org.springframework</groupId>-->
-<!--                    <artifactId>spring-orm</artifactId>-->
-<!--                    <version>5.1.15.RELEASE</version>-->
-<!--                </dependency>-->
-<!--                <dependency>-->
-<!--                    <groupId>com.microsoft.sqlserver</groupId>-->
-<!--                    <artifactId>mssql-jdbc</artifactId>-->
-<!--                    <version>8.2.1.jre8</version>-->
-<!--                </dependency>-->
-<!--                <dependency>-->
-<!--                    <groupId>org.apache.commons</groupId>-->
-<!--                    <artifactId>commons-pool2</artifactId>-->
-<!--                    <version>2.7.0</version>-->
-<!--                </dependency>-->
-<!--                <dependency>-->
-<!--                    <groupId>commons-pool</groupId>-->
-<!--                    <artifactId>commons-pool</artifactId>-->
-<!--                    <version>1.6</version>-->
-<!--                </dependency>-->
-<!--                <dependency>-->
-<!--                    <groupId>commons-dbcp</groupId>-->
-<!--                    <artifactId>commons-dbcp</artifactId>-->
-<!--                    <version>1.4</version>-->
-<!--                </dependency>-->
+                <!-- the rest of the dependencies is needed to run the tests only, not for compilation-->
+                <dependency>
+                    <groupId>org.objenesis</groupId>
+                    <artifactId>objenesis</artifactId>
+                    <version>3.0.1</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.esotericsoftware</groupId>
+                    <artifactId>kryo</artifactId>
+                    <version>5.0.0-RC1</version>
+                    <scope>test</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-orm</artifactId>
+                    <version>${spring.version}</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-pool2</artifactId>
+                    <version>2.7.0</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>commons-pool</groupId>
+                    <artifactId>commons-pool</artifactId>
+                    <version>1.6</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>commons-dbcp</groupId>
+                    <artifactId>commons-dbcp</artifactId>
+                    <version>1.4</version>
+                    <scope>test</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.hsqldb</groupId>
+                    <artifactId>hsqldb</artifactId>
+                    <version>2.5.1</version>
+                    <scope>test</scope>
+                </dependency>
             </dependencies>
         </profile>
     </profiles>
