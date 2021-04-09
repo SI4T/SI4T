@@ -6,13 +6,14 @@
 
     <groupId>org.si4t</groupId>
     <artifactId>si4t-se</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
     <packaging>jar</packaging>
+
     <profiles>
         <profile>
             <id>6.1.0</id>
@@ -127,9 +128,6 @@
         <profile>
             <!-- TODO: update versions-->
             <id>8.1.0</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <!-- 8.5.0-1023 -->
                 <tridion.version>[8.5.0,8.5.1)</tridion.version>
@@ -228,6 +226,154 @@
                     <artifactId>easylicense</artifactId>
                     <version>2.5</version>
                 </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <!-- TODO: update versions-->
+            <id>11.5.0</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <tridion.version>[11.5.0,11.5.1)</tridion.version>
+                <spring.version>4.3.3.RELEASE</spring.version>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>versions-maven-plugin</artifactId>
+                        <version>2.5</version>
+                        <configuration>
+                            <generateBackupPoms>false</generateBackupPoms>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.0</version>
+                        <configuration>
+                            <release>11</release>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <!-- Direct Dependencies start here -->
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                    <version>1.7.25</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.sdl.delivery</groupId>
+                    <artifactId>udp-core</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.sdl.delivery</groupId>
+                    <artifactId>udp-data-model-compatible</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.sdl.delivery</groupId>
+                    <artifactId>udp-cache</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.sdl.delivery</groupId>
+                    <artifactId>udp-common-util</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.sdl.delivery</groupId>
+                    <artifactId>udp-datalayer</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.sdl.delivery</groupId>
+                    <artifactId>udp-common-config-legacy</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.sdl.delivery</groupId>
+                    <artifactId>udp-common-config</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.sdl.delivery</groupId>
+                    <artifactId>udp-common-config-api</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.sdl.delivery</groupId>
+                    <artifactId>udp-storage-api</artifactId>
+                    <version>${tridion.version}</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-beans</artifactId>
+                    <version>${spring.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                    <version>${spring.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
+                    <version>${spring.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context-support</artifactId>
+                    <version>${spring.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.hibernate.javax.persistence</groupId>
+                    <artifactId>hibernate-jpa-2.0-api</artifactId>
+                    <version>1.0.1.Final</version>
+                </dependency>
+
+                <!-- the rest of the dependencies is needed to run the tests only, not for compilation -->
+<!--                <dependency>-->
+<!--                    <groupId>org.objenesis</groupId>-->
+<!--                    <artifactId>objenesis</artifactId>-->
+<!--                    <version>3.0.1</version>-->
+<!--                </dependency>-->
+<!--                <dependency>-->
+<!--                    <groupId>com.esotericsoftware</groupId>-->
+<!--                    <artifactId>kryo</artifactId>-->
+<!--                    <version>5.0.0</version>-->
+<!--                </dependency>-->
+<!--              -->
+<!--                <dependency>-->
+<!--                    <groupId>org.springframework</groupId>-->
+<!--                    <artifactId>spring-orm</artifactId>-->
+<!--                    <version>5.1.15.RELEASE</version>-->
+<!--                </dependency>-->
+<!--                <dependency>-->
+<!--                    <groupId>com.microsoft.sqlserver</groupId>-->
+<!--                    <artifactId>mssql-jdbc</artifactId>-->
+<!--                    <version>8.2.1.jre8</version>-->
+<!--                </dependency>-->
+<!--                <dependency>-->
+<!--                    <groupId>org.apache.commons</groupId>-->
+<!--                    <artifactId>commons-pool2</artifactId>-->
+<!--                    <version>2.7.0</version>-->
+<!--                </dependency>-->
+<!--                <dependency>-->
+<!--                    <groupId>commons-pool</groupId>-->
+<!--                    <artifactId>commons-pool</artifactId>-->
+<!--                    <version>1.6</version>-->
+<!--                </dependency>-->
+<!--                <dependency>-->
+<!--                    <groupId>commons-dbcp</groupId>-->
+<!--                    <artifactId>commons-dbcp</artifactId>-->
+<!--                    <version>1.4</version>-->
+<!--                </dependency>-->
             </dependencies>
         </profile>
     </profiles>
