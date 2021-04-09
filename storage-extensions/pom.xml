@@ -45,22 +45,22 @@
                 <dependency>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-beans</artifactId>
-                    <version>3.1.0.RELEASE</version>
+                    <version>5.3.5</version>
                 </dependency>
                 <dependency>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-core</artifactId>
-                    <version>3.1.0.RELEASE</version>
+                    <version>5.3.5</version>
                 </dependency>
                 <dependency>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-context</artifactId>
-                    <version>3.1.0.RELEASE</version>
+                    <version>5.3.5</version>
                 </dependency>
                 <dependency>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-context-support</artifactId>
-                    <version>3.1.0.RELEASE</version>
+                    <version>5.3.5</version>
                 </dependency>
                 <dependency>
                     <groupId>org.hibernate.javax.persistence</groupId>
@@ -99,22 +99,22 @@
                 <dependency>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-beans</artifactId>
-                    <version>3.1.0.RELEASE</version>
+                    <version>5.3.5</version>
                 </dependency>
                 <dependency>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-core</artifactId>
-                    <version>3.1.0.RELEASE</version>
+                    <version>5.3.5</version>
                 </dependency>
                 <dependency>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-context</artifactId>
-                    <version>3.1.0.RELEASE</version>
+                    <version>5.3.5</version>
                 </dependency>
                 <dependency>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-context-support</artifactId>
-                    <version>3.1.0.RELEASE</version>
+                    <version>5.3.5</version>
                 </dependency>
                 <dependency>
                     <groupId>org.hibernate.javax.persistence</groupId>
@@ -130,7 +130,7 @@
             <properties>
                 <!-- 8.5.0-1023 -->
                 <tridion.version>[8.5.0,8.5.1)</tridion.version>
-                <spring.version>4.3.3.RELEASE</spring.version>
+                <spring.version>5.3.5</spring.version>
             </properties>
             <build>
                 <plugins>
