@@ -179,7 +179,6 @@ public class JPASearchDAOFactory extends JPADAOFactory implements ApplicationCon
     @Override
     public void commitTransaction (String transactionId) throws StorageException {
         try {
-
             if (this.isExtendedDaoFactory) {
                 LOG.info("Start committing transaction: " + transactionId);
                 long start = System.currentTimeMillis();
@@ -199,7 +198,7 @@ public class JPASearchDAOFactory extends JPADAOFactory implements ApplicationCon
             throw e;
         } catch (IndexingException e) {
             LOG.error(e.getLocalizedMessage(), e);
-            SearchIndexProcessor.cleanupRegister(transactionId);
+            SearchIndexProcessor.cleanupRegister(transactionId, storageId);
             throw new StorageException(e);
 
         } finally {

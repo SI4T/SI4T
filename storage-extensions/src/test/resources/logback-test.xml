@@ -1,0 +1,23 @@
+<configuration scan="true" scanPeriod="1 minute">
+    <!-- Properties and variables -->
+    <property name="log.pattern" value="%highlight(%d{HH:mm:ss.SSS} [%thread] %-5level) %logger{36} - %msg%n"/>
+    <property name="log.history" value="7"/>
+    <property name="log.encoding" value="UTF-8"/>
+    <property name="log.folder" value="./log}"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>${log.encoding}</charset>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.hibernate" level="OFF" />
+    <logger name="org.springframework" level="OFF" />
+    <logger name="com.sdl.delivery.licensing.LicenseVerifier" level="OFF" />
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>

@@ -115,3 +115,6 @@ storage-extensions/dist/.DS_Store
 
 .DS_Store
 storage-extensions/target
+storage-extensions/.idea
+cd_licenses.xml
+.idea

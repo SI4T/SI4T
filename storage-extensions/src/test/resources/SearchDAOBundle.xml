@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StorageDAOBundles>
+    <StorageDAOBundle type="filesystem">
+		<StorageDAO typeMapping="Page" class="com.tridion.storage.si4t.dao.FSSearchPageDAO"/>
+		<StorageDAO typeMapping="Binary" class="com.tridion.storage.si4t.dao.FSSearchBinaryContentDAO"/>
+		<StorageDAO typeMapping="ComponentPresentation" class="com.tridion.storage.si4t.dao.FSSearchComponentPresentationDAO"/>
+    </StorageDAOBundle>
+	<StorageDAOBundle type="persistence">
+		<StorageDAO typeMapping="Page" class="com.tridion.storage.si4t.dao.JPASearchPageDAO"/>
+		<StorageDAO typeMapping="Binary" class="com.tridion.storage.si4t.dao.JPASearchBinaryContentDAO"/>
+		<StorageDAO typeMapping="ComponentPresentation" class="com.tridion.storage.si4t.dao.JPASearchComponentPresentationDAO"/>
+    </StorageDAOBundle>
+</StorageDAOBundles>

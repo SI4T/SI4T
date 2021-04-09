@@ -105,6 +105,7 @@ public class JPASearchComponentPresentationDAO extends JPAComponentPresentationD
 	@Override
 	public void remove(int publicationId, int componentId, int componentTemplateId, ComponentPresentationTypeEnum componentPresentationType) throws StorageException
 	{
+
 		super.remove(publicationId, componentId, componentTemplateId, componentPresentationType);
 		LOG.debug("Removal method 2");
 		TridionBaseItemProcessor.registerItemRemoval(

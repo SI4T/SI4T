@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration Version="6.0"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+    <Global>
+        <!-- SI4T:
+                Example SI4T / Solr config. Merge with existing config
+        -->
+        <Storages>
+
+            <StorageBindings>
+                <!-- SI4T:
+                        configure custom DAO Bundles
+                -->
+                <Bundle src="SearchDAOBundle.xml"/>
+            </StorageBindings>
+            <!-- SI4T:
+                    Example configuration in case JPA is used to publish pages. This is for example the case in DD4T setups.
+                    The standard Class com.tridion.storage.JAPDAOFactory is overridden.
+                    It is possible to mix and match JPA and FS Search DAO factories should there be need.
+            -->
+            <Storage
+                    Type="persistence" Class="com.tridion.storage.persistence.JPADAOFactory" Id="defaultdb" dialect="HSQLDB"
+                    Username="sa" Password="" Url="jdbc:hsqldb:mem:brokerDb"
+                    Driver="org.hsqldb.jdbc.JDBCDriver" generateDDL="true">
+                <Pool Type="jdbc" Size="5" MonitorInterval="60" IdleTimeout="120" CheckoutTimeout="120"/>
+                <!-- 	SI4T: configure the indexer class,
+                        as well as which binaries to index, the default URL to post documents to as well as
+                        pointing the indexer to specific cores for specific Publications.
+                -->
+                <Indexer
+                        Class="org.si4t.DummyIndexer"
+                        DefaultCoreUrl="http://localhost:8080/solr/staging"
+                        Mode="http"
+                        DocExtensions="pdf,docx,doc,xls,xlsx,pptx,ppt">
+                    <Urls>
+                        <!-- SI4T:
+                                The Value attribute is the complete URL to a Solr Core
+                                The Id attribute denotes a unique Tridion Publication Id
+                        -->
+                        <Url Value="http://localhost:8080/solr/staging_pub5" Id="5"/>
+                        <Url Value="http://localhost:8080/solr/staging" Id="8"/>
+                        <Url Value="http://localhost:8080/solr/staging" Id="12"/>
+                    </Urls>
+                </Indexer>
+            </Storage>
+
+
+            <Storage
+                    Type="persistence" Class="com.tridion.storage.persistence.JPADAOFactory" Id="otherdatastoreid" dialect="HSQLDB"
+                    Username="sa" Password="" Url="jdbc:hsqldb:mem:brokerDb"
+                    Driver="org.hsqldb.jdbc.JDBCDriver" generateDDL="true">
+                <Pool Type="jdbc" Size="5" MonitorInterval="60" IdleTimeout="120" CheckoutTimeout="120"/>
+                <!-- 	SI4T: configure the indexer class,
+                        as well as which binaries to index, the default URL to post documents to as well as
+                        pointing the indexer to specific cores for specific Publications.
+                -->
+                <Indexer Class="org.si4t.DummyIndexer"
+                         authentication="implicit"
+                         access_key_id=""
+                         secret_access_key=""
+                         documentEndpoint="-Your AWS CloudSearch Document endpoint URL-"
+                         DocExtensions="pdf,docx,doc,xls,xlsx,pptx,ppt"
+                         indexBatchSize="20"/>
+            </Storage>
+        </Storages>
+    </Global>
+    <ItemTypes defaultStorageId="defaultdb" cached="false">
+        <Publications>
+            <Publication defaultStorageId="otherdatastoreid"/>
+
+        </Publications>
+    </ItemTypes>
+
+    <!-- Specifies the location of the license file. -->
+    <License Location=""/>
+</Configuration>
