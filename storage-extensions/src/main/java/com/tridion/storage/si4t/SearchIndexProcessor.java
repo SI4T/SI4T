@@ -129,11 +129,10 @@ public final class SearchIndexProcessor {
 
                     INDEXER_CLASSES.remove(storageId);
                 }
-                INDEXER_CLASSES.put(storageId, indexerClass);
-//				searchIndex = (SearchIndex) indexerClass.newInstance();
-//				searchIndex.configure(indexerConfiguration);
-                LOG.info("Stored: {}, for storage Id: {} ", searchIndexImplementation, storageId);
 
+                INDEXER_CLASSES.put(storageId, indexerClass);
+
+                LOG.info("Stored: {}, for storage Id: {} ", searchIndexImplementation, storageId);
 
                 LOG.info("Loaded: " + searchIndexImplementation);
             } catch (ClassNotFoundException e) {
@@ -166,6 +165,7 @@ public final class SearchIndexProcessor {
             LOG.info("Loading {}", indexerClassName);
 
             SearchIndex searchIndex;
+            LOG.info("New instance for: {}", indexerClass);
             searchIndex = indexerClass.newInstance();
             searchIndex.configure(INDEXER_CONFIGURATION.get(storageId));
 
@@ -289,9 +289,6 @@ public final class SearchIndexProcessor {
                         // The main reason to remove it here, is so that other configured DAOFactories will not run
                         // it again.
                         iter.remove();
-
-                        LOG.debug("Destroying this indexer.");
-                        searchIndexer.destroy();
                     }
                 } else {
                     LOG.debug(
