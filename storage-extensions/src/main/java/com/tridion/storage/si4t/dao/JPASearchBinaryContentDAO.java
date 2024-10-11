@@ -87,13 +87,15 @@ public class JPASearchBinaryContentDAO extends JPABinaryContentDAO implements Bi
 			}
 		}
 	}
-	
-	
+
+
+
+
 	/* (non-Javadoc)
 	 * @see com.tridion.storage.persistence.JPABinaryContentDAO#create(com.tridion.storage.BinaryContent, java.lang.String)
 	 */
 	@Override
-	public BinaryContent create(BinaryContent binaryContent, String relativePath) throws StorageException
+	public void create(com.tridion.storage.BinaryContent binaryContent, String relativePath) throws StorageException
 	{
 		super.create(binaryContent, relativePath);
 
@@ -102,7 +104,6 @@ public class JPASearchBinaryContentDAO extends JPABinaryContentDAO implements Bi
 			LOG.info("Found a binary to index (Create): " + relativePath);
 			TridionBinaryProcessor.registerAddition(binaryContent, relativePath, relativePath, this.storageId);
 		}
-		return binaryContent;
 	}
 
 	/* (non-Javadoc)
