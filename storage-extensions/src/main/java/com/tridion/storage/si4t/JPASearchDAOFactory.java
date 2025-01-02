@@ -208,9 +208,6 @@ public class JPASearchDAOFactory extends JPADAOFactory implements ApplicationCon
 
     @Override
     public void shutdownFactory () {
-        if (this.isExtendedDaoFactory) {
-            searchIndexProcessor.shutDownFactory(storageId);
-        }
         super.shutdownFactory();
     }
 }

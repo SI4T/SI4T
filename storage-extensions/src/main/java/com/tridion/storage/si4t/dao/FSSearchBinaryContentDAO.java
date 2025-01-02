@@ -87,7 +87,7 @@ public class FSSearchBinaryContentDAO extends FSBinaryContentDAO
 	 * @see com.tridion.storage.filesystem.FSBinaryContentDAO#create(com.tridion.storage.BinaryContent, java.lang.String)
 	 */
 	@Override
-	public BinaryContent create(BinaryContent binaryContent, String relativePath) throws StorageException
+	public void create(BinaryContent binaryContent, String relativePath) throws StorageException
 	{
 		super.create(binaryContent, relativePath);		
 
@@ -96,7 +96,6 @@ public class FSSearchBinaryContentDAO extends FSBinaryContentDAO
 			LOG.info("Found a binary to index (Create): " + relativePath);
 			TridionBinaryProcessor.registerAddition(binaryContent, relativePath, relativePath, this.storageId);
 		}
-		return binaryContent;
 	}
 
 	/* (non-Javadoc)

@@ -127,9 +127,6 @@ public class FSSearchDAOFactory extends FSDAOFactory {
      */
     @Override
     public void shutdownFactory () {
-        if (this.isExtendedDaoFactory) {
-            searchIndexProcessor.shutDownFactory(storageId);
-        }
         super.shutdownFactory();
     }
 }

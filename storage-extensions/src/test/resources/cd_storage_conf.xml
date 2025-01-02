@@ -20,7 +20,7 @@
                     It is possible to mix and match JPA and FS Search DAO factories should there be need.
             -->
             <Storage
-                    Type="persistence" Class="com.tridion.storage.persistence.JPADAOFactory" Id="defaultdb" dialect="HSQLDB"
+                    Type="persistence" Class="com.tridion.storage.si4t.JPASearchDAOFactory" Id="defaultdb" dialect="HSQLDB"
                     Username="sa" Password="" Url="jdbc:hsqldb:mem:brokerDb"
                     Driver="org.hsqldb.jdbc.JDBCDriver" generateDDL="true">
                 <Pool Type="jdbc" Size="5" MonitorInterval="60" IdleTimeout="120" CheckoutTimeout="120"/>
@@ -47,7 +47,7 @@
 
 
             <Storage
-                    Type="persistence" Class="com.tridion.storage.persistence.JPADAOFactory" Id="otherdatastoreid" dialect="HSQLDB"
+                    Type="persistence" Class="com.tridion.storage.si4t.JPASearchDAOFactory" Id="otherdatastoreid" dialect="HSQLDB"
                     Username="sa" Password="" Url="jdbc:hsqldb:mem:brokerDb"
                     Driver="org.hsqldb.jdbc.JDBCDriver" generateDDL="true">
                 <Pool Type="jdbc" Size="5" MonitorInterval="60" IdleTimeout="120" CheckoutTimeout="120"/>
