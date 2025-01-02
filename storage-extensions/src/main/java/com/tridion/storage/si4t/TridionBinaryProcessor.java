@@ -40,14 +40,14 @@ public class TridionBinaryProcessor extends TridionBaseItemProcessor
 	public static void registerAddition(BinaryContent binaryContent, String originalRelativePath, String newRelativePath, String storageId)
 	{
 		String indexId = "binary:" + Integer.toString(binaryContent.getPublicationId()) + "-" + Integer.toString(binaryContent.getBinaryId());
-		String fileSize = Integer.toString(binaryContent.getObjectSize());
-		String path = originalRelativePath;
-		String fileExtension = Utils.GetBinaryFileExtension(newRelativePath);
+		String fileSize = Integer.toString(binaryContent.getContent().length);
+        String fileExtension = Utils.GetBinaryFileExtension(newRelativePath);
 		BinaryIndexData data = new BinaryIndexData(FactoryAction.PERSIST, IndexType.BINARY, Integer.toString(binaryContent.getPublicationId()), storageId);
 
 		data.setContent(binaryContent);
 		data.setUniqueIndexId(indexId);
-		data.setFileName(Utils.GetBinaryFileName(path) + "." + Utils.GetBinaryFileExtension(path));
+		data.setFileName(Utils.GetBinaryFileName(originalRelativePath) + "." + Utils.GetBinaryFileExtension(
+                originalRelativePath));
 		data.setFileSize(fileSize);
 		data.setFileType(fileExtension);
 		data.setIndexUrl(newRelativePath);
