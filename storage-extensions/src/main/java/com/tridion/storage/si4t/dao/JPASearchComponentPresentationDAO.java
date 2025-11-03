@@ -19,19 +19,14 @@ import com.tridion.broker.StorageException;
 import com.tridion.storage.ComponentPresentation;
 import com.tridion.storage.dao.ComponentPresentationDAO;
 import com.tridion.storage.persistence.JPAComponentPresentationDAO;
-import com.tridion.storage.si4t.FactoryAction;
-import com.tridion.storage.si4t.IndexType;
-import com.tridion.storage.si4t.TridionBaseItemProcessor;
-import com.tridion.storage.si4t.TridionPublishableItemProcessor;
-import com.tridion.storage.si4t.Utils;
+import com.tridion.storage.si4t.*;
 import com.tridion.storage.util.ComponentPresentationTypeEnum;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 /**
  * JPASearchComponentPresentationDAO.

@@ -52,7 +52,6 @@ public class JPASearchDAOFactoryTest {
 
         assertTrue(registry.contains("defaultdb"));
         assertTrue(registry.contains("otherdatastoreid"));
-
     }
 
     private DAOFactory initAndGetDaoFactory(String id, String configFile) throws ConfigurationException,
