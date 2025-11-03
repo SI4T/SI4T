@@ -68,7 +68,7 @@
     </Global>
 
     <ItemTypes defaultStorageId="defaultdb" cached="false">
-<!--        <Publication defaultStorageId="otherdatastoreid"/>-->
+        <Publication Id="123456789" defaultStorageId="otherdatastoreid"/>
     </ItemTypes>
 
     <!-- Specifies the location of the license file. -->

@@ -685,7 +685,6 @@
                     <artifactId>udp-storage-api</artifactId>
                     <version>${tridion.version}</version>
                 </dependency>
-
                 <dependency>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-beans</artifactId>
@@ -706,26 +705,14 @@
                     <artifactId>spring-context-support</artifactId>
                     <version>${spring.version}</version>
                 </dependency>
-
                 <dependency>
                     <groupId>org.hibernate</groupId>
                     <artifactId>hibernate-core</artifactId>
                     <version>6.5.2.Final</version>
                 </dependency>
-                <!--                <dependency>-->
-                <!--                    <groupId>com.zaxxer</groupId>-->
-                <!--                    <artifactId>HikariCP</artifactId>-->
-                <!--                    <version>5.0.1</version>-->
-                <!--                </dependency>-->
 
                 <!-- the rest of the dependencies are needed to run the tests only, not for compilation-->
 
-                <dependency>
-                    <groupId>com.sdl.delivery</groupId>
-                    <artifactId>udp-core-license</artifactId>
-                    <version>${tridion.version}</version>
-                    <scope>test</scope>
-                </dependency>
                 <dependency>
                     <groupId>ch.qos.logback</groupId>
                     <artifactId>logback-classic</artifactId>
@@ -739,21 +726,27 @@
                     <scope>test</scope>
                 </dependency>
                 <dependency>
-                    <groupId>org.objenesis</groupId>
-                    <artifactId>objenesis</artifactId>
-                    <version>3.0.1</version>
-                    <scope>test</scope>
-                </dependency>
-                <dependency>
                     <groupId>com.esotericsoftware</groupId>
                     <artifactId>kryo</artifactId>
                     <version>5.0.4</version>
                     <scope>test</scope>
                 </dependency>
                 <dependency>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-orm</artifactId>
-                    <version>${spring.version}</version>
+                    <groupId>com.sdl.delivery</groupId>
+                    <artifactId>udp-core-license</artifactId>
+                    <version>${tridion.version}</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.zaxxer</groupId>
+                    <artifactId>HikariCP</artifactId>
+                    <version>5.0.1</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>jakarta.annotation</groupId>
+                    <artifactId>jakarta.annotation-api</artifactId>
+                    <version>3.0.0</version>
                     <scope>test</scope>
                 </dependency>
                 <dependency>
@@ -769,21 +762,27 @@
                     <scope>test</scope>
                 </dependency>
                 <dependency>
-                    <groupId>commons-pool</groupId>
-                    <artifactId>commons-pool</artifactId>
-                    <version>1.6</version>
-                    <scope>test</scope>
-                </dependency>
-                <dependency>
-                    <groupId>commons-dbcp</groupId>
-                    <artifactId>commons-dbcp</artifactId>
-                    <version>1.4</version>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-text</artifactId>
+                    <version>1.10.0</version>
                     <scope>test</scope>
                 </dependency>
                 <dependency>
                     <groupId>org.hsqldb</groupId>
                     <artifactId>hsqldb</artifactId>
                     <version>2.5.1</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.objenesis</groupId>
+                    <artifactId>objenesis</artifactId>
+                    <version>3.0.1</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-orm</artifactId>
+                    <version>${spring.version}</version>
                     <scope>test</scope>
                 </dependency>
             </dependencies>

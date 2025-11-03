@@ -1,10 +1,7 @@
 <configuration scan="true" scanPeriod="1 minute">
-    <!-- Properties and variables -->
     <property name="log.pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
-    <property name="log.history" value="7"/>
     <property name="log.encoding" value="UTF-8"/>
-    <property name="log.folder" value="./log"/>
-    <property name="log.level" value="TRACE"/>
+    <property name="log.level" value="ERROR"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -13,24 +10,11 @@
         </encoder>
     </appender>
 
-    <appender name="rollingCoreLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.folder}/si4t.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>${log.history}</maxHistory>
-        </rollingPolicy>
-        <encoder>
-            <charset>${log.encoding}</charset>
-            <pattern>${log.pattern}</pattern>
-        </encoder>
-        <prudent>true</prudent>
-    </appender>
-
-<!--    <logger name="org.hibernate" level="OFF" />-->
-<!--    <logger name="org.springframework" level="OFF" />-->
-<!--    <logger name="com.sdl.delivery.licensing.LicenseVerifier" level="OFF" />-->
+    <logger name="org.hibernate" level="OFF" />
+    <logger name="org.springframework" level="OFF" />
+    <logger name="com.sdl.delivery.licensing.LicenseVerifier" level="OFF" />
 
     <root level="${log.level}">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="rollingCoreLog"/>
     </root>
 </configuration>
