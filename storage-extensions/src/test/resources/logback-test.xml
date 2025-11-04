@@ -1,7 +1,7 @@
 <configuration scan="true" scanPeriod="1 minute">
-    <property name="log.pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <property name="log.pattern" value="%highlight(%d{HH:mm:ss.SSS} [%thread] %-5level) %logger{36} - %msg%n"/>
     <property name="log.encoding" value="UTF-8"/>
-    <property name="log.level" value="ERROR"/>
+    <property name="log.level" value="DEBUG"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>

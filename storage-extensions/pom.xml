@@ -15,6 +15,7 @@
     <packaging>jar</packaging>
 
     <profiles>
+        <!-- Tridion 2011 SP1 -->
         <profile>
             <id>6.1.0</id>
             <properties>
@@ -69,6 +70,8 @@
                 </dependency>
             </dependencies>
         </profile>
+
+        <!-- Tridion 2013 SP1 -->
         <profile>
             <id>7.1.0</id>
             <properties>
@@ -125,6 +128,8 @@
                 <!-- Indirect Dependencies start here -->
             </dependencies>
         </profile>
+
+        <!-- SDL Web 8.5 -->
         <profile>
             <id>8.1.0</id>
             <properties>
@@ -227,6 +232,8 @@
                 </dependency>
             </dependencies>
         </profile>
+
+        <!-- Tridion 9.5 -->
         <profile>
             <id>11.5.0</id>
             <properties>
@@ -398,6 +405,8 @@
                 </dependency>
             </dependencies>
         </profile>
+
+        <!-- Tridion 10 -->
         <profile>
             <id>12.0.0</id>
             <properties>
@@ -579,6 +588,8 @@
                 </dependency>
             </dependencies>
         </profile>
+
+        <!-- Tridion 10.1 -->
         <profile>
             <id>12.2.0</id>
             <activation>
