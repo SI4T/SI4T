@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration Version="6.0"
-               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
->
+<Configuration Version="12.2" xsi:noNamespaceSchemaLocation="schemas/cd_storage_conf.xsd"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Namespace default="${namespaceprefix:-tcm}"/>
     <Global>
         <!-- SI4T:
                 Example SI4T / Solr config. Merge with existing config
         -->
         <Storages>
-
             <StorageBindings>
                 <!-- SI4T:
                         configure custom DAO Bundles
                 -->
                 <Bundle src="SearchDAOBundle.xml"/>
             </StorageBindings>
+
             <!-- SI4T:
                     Example configuration in case JPA is used to publish pages. This is for example the case in DD4T setups.
                     The standard Class com.tridion.storage.JAPDAOFactory is overridden.
                     It is possible to mix and match JPA and FS Search DAO factories should there be need.
             -->
             <Storage
-                    Type="persistence" Class="com.tridion.storage.si4t.JPASearchDAOFactory" Id="defaultdb" dialect="HSQLDB"
+                    Type="persistence" Class="com.tridion.storage.si4t.JPASearchDAOFactory"
+                    Id="defaultdb" dialect="HSQLDB"
                     Username="sa" Password="" Url="jdbc:hsqldb:mem:brokerDb"
                     Driver="org.hsqldb.jdbc.JDBCDriver" generateDDL="true">
                 <Pool Type="jdbc" Size="5" MonitorInterval="60" IdleTimeout="120" CheckoutTimeout="120"/>
-                <!-- 	SI4T: configure the indexer class,
+                <!-- SI4T: configure the indexer class,
                         as well as which binaries to index, the default URL to post documents to as well as
                         pointing the indexer to specific cores for specific Publications.
                 -->
@@ -45,13 +46,13 @@
                 </Indexer>
             </Storage>
 
-
             <Storage
-                    Type="persistence" Class="com.tridion.storage.si4t.JPASearchDAOFactory" Id="otherdatastoreid" dialect="HSQLDB"
+                    Type="persistence" Class="com.tridion.storage.si4t.JPASearchDAOFactory"
+                    Id="otherdatastoreid" dialect="HSQLDB"
                     Username="sa" Password="" Url="jdbc:hsqldb:mem:brokerDb"
                     Driver="org.hsqldb.jdbc.JDBCDriver" generateDDL="true">
                 <Pool Type="jdbc" Size="5" MonitorInterval="60" IdleTimeout="120" CheckoutTimeout="120"/>
-                <!-- 	SI4T: configure the indexer class,
+                <!-- SI4T: configure the indexer class,
                         as well as which binaries to index, the default URL to post documents to as well as
                         pointing the indexer to specific cores for specific Publications.
                 -->
@@ -65,11 +66,9 @@
             </Storage>
         </Storages>
     </Global>
-    <ItemTypes defaultStorageId="defaultdb" cached="false">
-        <Publications>
-            <Publication defaultStorageId="otherdatastoreid"/>
 
-        </Publications>
+    <ItemTypes defaultStorageId="defaultdb" cached="false">
+        <Publication Id="123456789" defaultStorageId="otherdatastoreid"/>
     </ItemTypes>
 
     <!-- Specifies the location of the license file. -->
